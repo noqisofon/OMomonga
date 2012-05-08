@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 =begin
-  twitter-config.rb にはついったー用のコンシューマーキー用モジュールが入っています。
+  twitter-config.rb には…おいこらやめろ！ このファイルは見ちゃらめぇぇぇぇぇぇぇぇぇぇぇぇぇぇ！！！
 
   Copyright (C) 2012 ned rihine All rights reserved.
 =end
