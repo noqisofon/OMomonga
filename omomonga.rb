@@ -1,7 +1,7 @@
 #!/usr/bin/env ruby
 # -*- coding: utf-8 -*-
 =begin
-  pmomonga.rb は エントリーポイントです。
+  omomonga.rb は エントリーポイントです。omomonga の o は obake の o です。
 
   Copyright (C) 2012 ned rihine All rights reserved.
 =end
@@ -9,7 +9,7 @@
 require 'optparse'
 
 
-module GhostlyPMomonga
+module OMomonga
 
   class Application
     PROGRAM = File.basename __FILE__, ".*"
@@ -104,10 +104,10 @@ module GhostlyPMomonga
   end  # Application
 
 
-end  # GhostlyPMomonga
+end  # OMomonga
 
 
 if $0 == __FILE__ then
-  progn = GhostlyPMomonga::Application.new
+  progn = OMomonga::Application.new
   progn.run
 end
