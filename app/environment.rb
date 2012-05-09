@@ -20,13 +20,13 @@ module OMomonga::Environment
   # ユーザーの設定用ファイルのパスを返します。
   # 
   def user_config_dir
-    File.join "~", ".config", app_name.downcase
+    File.expand_path( File.join "~", ".config", app_name.downcase )
   end
 
   # 
   # ユーザーの一時的ファイルのパスを返します。
   # 
   def user_cache_dir
-    File.join "~", ".cache", app_name.downcase
+    File.expand_path( File.join "~", ".cache", app_name.downcase )
   end
 end
