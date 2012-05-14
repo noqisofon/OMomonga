@@ -11,6 +11,8 @@ require 'optparse'
 
 module OMomonga
 
+  require File.expand_path( "app/utils" )
+
   class Application
     PROGRAM = File.basename __FILE__, ".*"
 
@@ -36,37 +38,36 @@ module OMomonga
       argument_parse
       argument_verify
 
-      require File.expand_path( "utils" )
     end  # run
 
     private
-    # 
+    #
     # コマンドオプションをパースします。
-    # 
+    #
     def argument_parse
       option_parser = OptionParser.new do |opts|
         #opts.banner = HELP_TEXT
-        # 
+        #
         # YAML 形式の authrize token が書かれたファイルを指定します。
-        # 
+        #
         opts.on "-a", "--account PATH", "アーサライズトークンをファイルで指定する" do |account_file|
           @options[:account] = account_file
         end
-        # 
+        #
         # 処理情報をコンソールに全く出力しないようにします。
-        # 
+        #
         opts.on "-q", "--quiet", "処理情報を出力しない" do |quiet_flag|
           @options[:quiet] = quiet_flag
         end
-        # 
+        #
         # 処理情報をコンソールに過剰に出力するようにします。
-        # 
+        #
         opts.on "--verbose", "処理情報を過剰に出力する" do |verbose_flag|
           @options[:verbose] = verbose_flag
         end
-        # 
+        #
         # デバッグモードで起動します。
-        # 
+        #
         opts.on "--debug", "デバッグモードで起動" do |debug_flag|
           @options[:debug] = debug_flag
         end
@@ -77,9 +78,9 @@ module OMomonga
       option_parser.parse args
     end  # argument_parse
 
-    # 
+    #
     # パースしたコマンドオプションの整合性や正しさをチェックします。
-    # 
+    #
     def argument_verify
       if @options.has_key? :account then
         @account_filepath = File.expand_path @options[:account]
@@ -99,7 +100,7 @@ module OMomonga
     #
     #
     def load_account_file
-      
+
     end  # load_account_file
   end  # Application
 
