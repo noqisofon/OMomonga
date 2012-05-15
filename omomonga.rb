@@ -38,6 +38,9 @@ module OMomonga
       argument_parse
       argument_verify
 
+      window = Gui::MomongaWindow.new
+      window.show_all
+      Gtk.main
     end  # run
 
     private
