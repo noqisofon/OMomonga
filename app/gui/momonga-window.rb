@@ -21,19 +21,72 @@ module OMomonga::Gui
     private
     def init_widgets
       @vbox0 = Gtk::VBox.new( false, 0 )
-      @menu_bar = Gtk::MenuBar.new
+      @menu_strip = Gtk::MenuBar.new
+      @tweets_menu_strip_item = Gtk::MenuItem.new( "ツイート(_T)" )
+      @new_tweet_tool_strip_item = Gtk::MenuItem.new( "新しいツイート(_N)" )
+      @separator0 = Gtk::SeparatorMenuItem.new
+      @quit_tool_strip_item = Gtk::MenuItem.new( "終了(_Q)" )
+      @edit_menu_strip_item = Gtk::MenuItem.new( "編集(_E)" )
+      @preference_tool_strip_item = Gtk::MenuItem.new( "設定(_P)" )
+      @help_menu_strip_item = Gtk::MenuItem.new( "ヘルプ(_H)" )
+      @about_tool_strip_item = Gtk::MenuItem.new( "おばけももんがについて(_A)" )
       @tree_view = Gtk::TreeView.new
 
       #
       # @vbox0
       #
-      @vbox0.pack_start @menu_bar, false, false
+      @vbox0.pack_start @menu_strip, false, false
       @vbox0.pack_start @tree_view
 
       #
-      # @menu_bar
+      # @menu_strip
       #
-      init_menu
+      [ @tweets_menu_strip_item, @edit_menu_strip_item, @help_menu_strip_item ].each do |menu_strip_item|
+        @menu_strip.append menu_strip_item
+      end
+
+      #
+      # @tweets_menu_strip_item
+      #
+      @tweets_menu_strip_item.submenu = Gtk::Menu.new
+
+      #
+      # @new_tweet_tool_strip_item
+      #
+      @tweets_menu_strip_item.submenu.append @new_tweet_tool_strip_item
+
+      #
+      # @separator0
+      #
+      @tweets_menu_strip_item.submenu.append @separator0
+
+      #
+      # @quit_tool_strip_item
+      #
+      @quit_tool_strip_item.signal_connect "activate" do
+        Gtk.main_quit
+      end
+      @tweets_menu_strip_item.submenu.append @quit_tool_strip_item
+
+      #
+      # @edit_menu_strip_item
+      #
+      @edit_menu_strip_item.submenu = Gtk::Menu.new
+
+      #
+      # @preference_tool_strip_item
+      #
+      @edit_menu_strip_item.submenu.append @preference_tool_strip_item
+
+      #
+      # @help_menu_strip_item
+      #
+      @help_menu_strip_item.submenu = Gtk::Menu.new
+
+      #
+      # @about_tool_strip_item
+      #
+      @help_menu_strip_item.submenu.append @about_tool_strip_item
 
       #
       # @tree_view
@@ -42,29 +95,11 @@ module OMomonga::Gui
       #
       # self
       #
-      set_size_request 320, 500
+      set_default_size 320, 500
       set_border_width 5
       add @vbox0
     end
 
-    def init_menu
-      { "ツイート(T)" => [ "新しいツイート(N)", "----", "終了(Q)" ] ,
-        "編集(E)" => [ "設定(P)" ],
-        "ヘルプ(H)" => [ "おばけももんがとは(A)" ] }.each do |k, v|
-        menu_strip_item = Gtk::MenuItem.new( k )
-        tool_strip_subitems = Gtk::Menu.new
-        v.each do |label|
-          unless label =~ /-+/ then
-            tool_strip_subitems.append Gtk::MenuItem.new( label )
-          else
-            tool_strip_subitems.append Gtk::SeparatorMenuItem.new
-          end
-        end
-        menu_strip_item.submenu = tool_strip_subitems
-
-        @menu_bar.append menu_strip_item
-      end
-    end
   end
 
 
