@@ -5,9 +5,12 @@
   Copyright (C) 2012 ned rihine All rights reserved.
 =end
 
+require File.expand_path( "./ghostly_require.rb", File.dirname( __FILE__ ) )
+
+ghostly_require "app/environment.rb"
+
 
 module OMomonga
-
 
   class Version
     MAJOR = 0
@@ -40,7 +43,7 @@ module OMomonga
     end
 
     def inspect
-      "#{Environment::APPNAME} ver #{to_s}"
+      "#{Environment.app_name} ver #{to_s}"
     end
 
     def size
@@ -59,5 +62,11 @@ module OMomonga
 
   VERSION = Version.new
 
+end
 
+
+if $0 == __FILE__ then
+  p OMomonga::VERSION
+  p OMomonga::VERSION.to_s
+  p OMomonga::VERSION.to_a
 end

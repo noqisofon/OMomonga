@@ -5,6 +5,8 @@
   Copyright (C) 2012 ned rihine All rights reserved.
 =end
 
+require "../ghostly_require.rb"
+
 ghostly_require 'main-window.rb'
 
 
@@ -101,6 +103,5 @@ module OMomonga::Gui
     end
 
   end
-
 
 end

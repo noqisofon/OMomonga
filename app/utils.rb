@@ -8,9 +8,12 @@
 require 'twitter'
 require 'oauth'
 
-require File.expand_path( "app/ghostly_require.rb" )
+require File.expand_path( "./ghostly_require.rb", File.dirname( __FILE__ ) )
 
-extend OMomonga
 
-ghostly_require 'app/*'
-ghostly_require 'app/gui/*'
+module OMomonga
+
+  ghostly_require 'app/*'
+  ghostly_require 'app/gui/*'
+
+end

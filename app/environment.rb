@@ -5,29 +5,39 @@
   Copyright (C) 2012 ned rihine All rights reserved.
 =end
 
-ghostly_require 'config.rb'
+require File.expand_path( "./ghostly_require.rb", File.dirname( __FILE__ ) )
+
+ghostly_require 'app/config.rb'
 
 
 module OMomonga::Environment
+  class << self
+    #
+    # アプリケーション名を返します。
+    #
+    def app_name
+      OMomonga::Config::APPLICATION_REGISTATION_NAME
+    end
 
-  #
-  # アプリケーション名を返します。
-  #
-  def app_name
-    Config::APPLICATION_NAME
-  end
+    #
+    # ユーザーの設定用ファイルのパスを返します。
+    #
+    def user_config_dir
+      File.expand_path( File.join( "~", ".config", app_name.downcase ) )
+    end
 
-  #
-  # ユーザーの設定用ファイルのパスを返します。
-  #
-  def user_config_dir
-    File.expand_path( File.join "~", ".config", app_name.downcase )
+    #
+    # ユーザーの一時的ファイルのパスを返します。
+    #
+    def user_cache_dir
+      File.expand_path( File.join( "~", ".cache", app_name.downcase ) )
+    end
   end
+end
 
-  #
-  # ユーザーの一時的ファイルのパスを返します。
-  #
-  def user_cache_dir
-    File.expand_path( File.join "~", ".cache", app_name.downcase )
-  end
+
+if $0 == __FILE__ then
+  p OMomonga::Environment.app_name
+  p OMomonga::Environment.user_config_dir
+  p OMomonga::Environment.user_cache_dir
 end
