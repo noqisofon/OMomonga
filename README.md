@@ -7,3 +7,9 @@ RT しやすすぎるついったークライアント、おばけももんが�
 ## OMomonga の O って？
 
 もちろん「おばけ」の O ですよ。
+
+# 必要なもの
+
+* gtk2
+* twitter
+* oauth (simple_oauth に変えたい)
