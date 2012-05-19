@@ -8,19 +8,22 @@
 
 require 'optparse'
 
+require File.expand_path( "app/utils" )
+
 
 module OMomonga
 
-  require File.expand_path( "app/utils" )
-
+  #
+  #
+  #
   class Application
     PROGRAM = File.basename __FILE__, ".*"
 
     WARNING_LEVEL = {
       :silence => 1000,
-      :medium => 500,
-      :debug => 200,
-      :verbose => 100
+      :medium  =>  500,
+      :debug   =>  200,
+      :verbose =>  100
     }
 
     #
@@ -49,6 +52,7 @@ module OMomonga
     #
     def argument_parse
       option_parser = OptionParser.new do |opts|
+        opts.version = VERSION.to_s
         #opts.banner = HELP_TEXT
         #
         # YAML 形式の authrize token が書かれたファイルを指定します。
@@ -98,13 +102,6 @@ module OMomonga
         @warning_level = :debug
       end
     end  # argument_verify
-
-    #
-    #
-    #
-    def load_account_file
-
-    end  # load_account_file
   end  # Application
 
 

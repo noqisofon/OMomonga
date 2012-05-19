@@ -7,6 +7,8 @@
 
 require 'gtk2'
 
+require "../ghostly_require.rb"
+
 
 module OMomonga::Gui
 
@@ -56,3 +58,13 @@ module OMomonga::Gui
 
 
 end
+
+
+if $0 == __FILE__ then
+  window = OMomonga::Gui::MainWindow.new "テスト窓"
+  window.set_default_size 300, 200
+  window.show_all
+
+  Gtk.main
+end
+

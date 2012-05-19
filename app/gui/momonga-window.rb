@@ -8,6 +8,7 @@
 require "../ghostly_require.rb"
 
 ghostly_require 'main-window.rb'
+ghostly_require 'about-box.rb'
 
 
 module OMomonga::Gui
@@ -88,6 +89,12 @@ module OMomonga::Gui
       #
       # @about_tool_strip_item
       #
+      @about_tool_strip_item.signal_connect "activate" do
+        about_box = AboutBox.new
+        about_box.show_all
+        about_box.run
+        about_box.destroy
+      end
       @help_menu_strip_item.submenu.append @about_tool_strip_item
 
       #
@@ -105,3 +112,12 @@ module OMomonga::Gui
   end
 
 end
+
+
+if $0 == __FILE__ then
+  window = OMomonga::Gui::MomongaWindow.new
+  window.show_all
+
+  Gtk.main
+end
+
