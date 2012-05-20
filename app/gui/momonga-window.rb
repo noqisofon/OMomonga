@@ -56,6 +56,7 @@ module OMomonga::Gui
       #
       # @new_tweet_tool_strip_item
       #
+      # @new_tweet_tool_strip_item.signal_connect do "activate" end
       @tweets_menu_strip_item.submenu.append @new_tweet_tool_strip_item
 
       #
@@ -79,6 +80,7 @@ module OMomonga::Gui
       #
       # @preference_tool_strip_item
       #
+      # @preference_tool_strip_item.signal_connect do "activate" end
       @edit_menu_strip_item.submenu.append @preference_tool_strip_item
 
       #

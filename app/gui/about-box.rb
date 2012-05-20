@@ -1,4 +1,9 @@
 # -*- coding: utf-8 -*-
+=begin
+  about-box.rb はついったーにログインするためのダイアログが入っています。
+
+  Copyright (C) 2012 ned rihine All rights reserved.
+=end
 require 'gtk2'
 require File.expand_path( "../ghostly_require.rb", File.dirname( __FILE__ ) )
 
