@@ -39,6 +39,6 @@ end
 if $0 == __FILE__ then
   about_box = OMomonga::Gui::AboutBox.new
   about_box.show_all
-  p about_box.run
+  about_box.run
   about_box.destroy
 end

@@ -14,6 +14,9 @@ ghostly_require 'about-box.rb'
 module OMomonga::Gui
 
 
+  #
+  # おばけももんがのメイン窓です。
+  #
   class MomongaWindow < MainWindow
     def initialize()
       super "おばけももんが"
@@ -56,7 +59,7 @@ module OMomonga::Gui
       #
       # @new_tweet_tool_strip_item
       #
-      # @new_tweet_tool_strip_item.signal_connect do "activate" end
+      @new_tweet_tool_strip_item.signal_connect do "activate" new_tweet_tool_clicked end
       @tweets_menu_strip_item.submenu.append @new_tweet_tool_strip_item
 
       #
@@ -67,9 +70,7 @@ module OMomonga::Gui
       #
       # @quit_tool_strip_item
       #
-      @quit_tool_strip_item.signal_connect "activate" do
-        Gtk.main_quit
-      end
+      @quit_tool_strip_item.signal_connect "activate" do quit_tool_clicked end
       @tweets_menu_strip_item.submenu.append @quit_tool_strip_item
 
       #
@@ -80,7 +81,7 @@ module OMomonga::Gui
       #
       # @preference_tool_strip_item
       #
-      # @preference_tool_strip_item.signal_connect do "activate" end
+      @preference_tool_strip_item.signal_connect do "activate" preference_tool_clicked end
       @edit_menu_strip_item.submenu.append @preference_tool_strip_item
 
       #
@@ -91,12 +92,7 @@ module OMomonga::Gui
       #
       # @about_tool_strip_item
       #
-      @about_tool_strip_item.signal_connect "activate" do
-        about_box = AboutBox.new
-        about_box.show_all
-        about_box.run
-        about_box.destroy
-      end
+      @about_tool_strip_item.signal_connect "activate" do about_tool_clicked end
       @help_menu_strip_item.submenu.append @about_tool_strip_item
 
       #
@@ -109,6 +105,35 @@ module OMomonga::Gui
       set_default_size 320, 500
       set_border_width 5
       add @vbox0
+    end
+
+    #
+    # 「新しいツイート(_N)」をクリックした時に呼び出されます。
+    #
+    def new_tweet_tool_clicked
+    end
+
+    #
+    # 「終了(_Q)」をクリックした時に呼び出されます。
+    #
+    def quit_tool_clicked
+      Gtk.main_quit
+    end
+
+    #
+    # 「設定(_P)」をクリックした時に呼び出されます。
+    #
+    def preference_tool_clicked
+    end
+
+    #
+    # 「おばけももんがについて(_A)」をクリックした時に呼び出されます。
+    #
+    def about_tool_clicked
+      about_box = AboutBox.new
+      about_box.show_all
+      about_box.run
+      about_box.destroy
     end
 
   end

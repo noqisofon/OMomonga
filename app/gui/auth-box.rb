@@ -7,13 +7,11 @@
 
 require 'gtk2'
 require 'oauth'
-require 'twitter'
-require 'yaml'
 
 require File.expand_path( "../ghostly_require.rb", File.dirname( __FILE__ ) )
 
-ghostly_require 'app/environment.rb'
 ghostly_require 'app/twitter-config.rb'
+ghostly_require 'app/utils/model.rb'
 
 
 module OMomonga
@@ -29,16 +27,16 @@ module OMomonga
       # 作成したコンシューマから、リクエストトークンを取得します。
       request_token = consumer.get_request_token
 
-      label = Gtk::Label.new
-      hbox0 = Gtk::HBox.new
-      pin_entry = Gtk::Entry.new
-      auth_button = Gtk::Button.new( "認証", false )
-      vbox0 = Gtk::VBox.new
+      @label = Gtk::Label.new
+      @hbox0 = Gtk::HBox.new
+      @pin_entry = Gtk::Entry.new
+      @auth_button = Gtk::Button.new( "認証", false )
+      @vbox0 = Gtk::VBox.new
 
       #
-      # label
+      # @label
       #
-      label.markup = <<TEXT
+      @label.markup = <<TEXT
 こんばんは。
 現在、あなたはおばけももんがにおいて
 Twitter アカウントを認証していません。
@@ -48,50 +46,57 @@ Twitter アカウントを認証していません。
 <a href="#{request_token.authorize_url}">#{request_token.authorize_url}</a>
 TEXT
       #
-      # hbox0
+      # @hbox0
       #
-      hbox0.pack_start pin_entry
-      hbox0.pack_start auth_button
+      @hbox0.pack_start @pin_entry
+      @hbox0.pack_start @auth_button
 
       #
-      # pin_entry
+      # @pin_entry
       #
 
       #
-      # auth_button
+      # @auth_button
       #
-      auth_button.signal_connect "clicked" do
-        unless pin_entry.text.length == 0 then
-          access_token = request_token.get_access_token( :oauth_token => request_token.token,
-                                                  :oauth_verifier => pin_entry.text )
-          Twitter.configure do |config|
-            config.consumer_key = OMomonga::TwitterConfig::CONSUMER_KEY
-            config.consumer_secret = OMomonga::TwitterConfig::CONSUMER_SECRET
-            config.oauth_token = access_token.token
-            config.oauth_token_secret = access_token.secret
-          end
-          user = Twitter.current_user
-          YAML.dump( {
-                       "token" => access_token.token,
-                       "secret" => access_token.secret
-                     },
-               File.open( File.join( OMomonga::Environment.user_config_dir, "#{user.screen_name}.yml" ), "w" ) )
-          Gtk.main_quit
-        end
-      end
+      @auth_button.signal_connect "clicked" do auth_button_clicked request_token end
 
       #
-      # vbox
+      # @vbox0
       #
-      vbox0.pack_start label
-      vbox0.pack_start hbox0
+      @vbox0.pack_start @label
+      @vbox0.pack_start @hbox0
 
       #
       # self
       #
+      signal_connect "destroy" do destroyed end
       set_default_size 300, 80
-      add vbox0
+      set_border_width 10
+      set_destroy_with_parent true
+      resizeable = false
+      focus = @pin_entry
+      add @vbox0
     end
+
+    #
+    #
+    #
+    def auth_button_clicked(request_token)
+      pin_entry_text = @pin_entry.text
+      unless pin_entry_text.length == 0 then
+        access_token = request_token.get_access_token( :oauth_token => request_token.token,
+                                                 :oauth_verifier => pin_entry_text )
+
+        Utils.save_access_token access_token
+
+        Gtk.main_quit
+      end
+    end
+
+    def destroyed
+      Gtk.main_quit if transient_for.nil?
+    end
+
   end
 
 
