@@ -41,6 +41,8 @@ module OMomonga
       argument_parse
       argument_verify
 
+      #access_token = Utils.load_access_token "noqisofon"
+
       window = Gui::MomongaWindow.new
       window.show_all
       Gtk.main

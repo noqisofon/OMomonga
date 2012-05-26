@@ -16,6 +16,7 @@ ghostly_require 'app/twitter-config.rb'
 
 
 module OMomonga::Utils
+
   class << self
 
     #
@@ -36,12 +37,40 @@ module OMomonga::Utils
       #
       user = Twitter.current_user
 
-      filepath = File.join( OMomonga::Environment.user_config_dir, "#{user.screen_name}.yml" )
+      filepath = get_access_token_file user.screen_name
       File.open( filepath, "w" ) do |output|
         YAML.dump( { "token" => access_token.token,
                      "secret" => access_token.secret },
              output )
       end
     end
-  end
+
+    #
+    #
+    #
+    def load_access_token(account_name)
+      filepath = get_access_token_file account_name
+      #
+      # 指定されたファイルがない場合、nil を返します。
+      #
+      return nil unless File.exist? filepath
+
+      File.open( filepath, "r" ) { |input| YAML.load input }
+    end
+
+    private
+    #
+    # 指定されたアカウント名からアクセストークンを保存するファイルのパスを返します。
+    #
+    def get_access_token_file(account_name)
+      File.join OMomonga::Environment.user_config_dir, "#{account_name}.yml"
+    end
+
+  end  # class << self
+
+end  # module OMomonga::Utils
+
+
+if $0 == __FILE__ then
+  p OMomonga::Utils.load_access_token ARGV[0] if ARGV.size > 0
 end

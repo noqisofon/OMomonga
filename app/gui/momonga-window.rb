@@ -9,6 +9,7 @@ require "../ghostly_require.rb"
 
 ghostly_require 'main-window.rb'
 ghostly_require 'about-box.rb'
+ghostly_require 'tweet-box.rb'
 
 
 module OMomonga::Gui
@@ -59,7 +60,7 @@ module OMomonga::Gui
       #
       # @new_tweet_tool_strip_item
       #
-      @new_tweet_tool_strip_item.signal_connect do "activate" new_tweet_tool_clicked end
+      @new_tweet_tool_strip_item.signal_connect "activate" do new_tweet_tool_clicked end
       @tweets_menu_strip_item.submenu.append @new_tweet_tool_strip_item
 
       #
@@ -81,7 +82,7 @@ module OMomonga::Gui
       #
       # @preference_tool_strip_item
       #
-      @preference_tool_strip_item.signal_connect do "activate" preference_tool_clicked end
+      @preference_tool_strip_item.signal_connect "activate" do preference_tool_clicked end
       @edit_menu_strip_item.submenu.append @preference_tool_strip_item
 
       #
@@ -111,6 +112,9 @@ module OMomonga::Gui
     # 「新しいツイート(_N)」をクリックした時に呼び出されます。
     #
     def new_tweet_tool_clicked
+      tweet_box = TweetBox.new
+      tweet_box.transient_for = self
+      tweet_box.show_all
     end
 
     #
