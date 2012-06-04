@@ -38,10 +38,10 @@ module OMomonga::Utils
       user = Twitter.current_user
 
       filepath = get_access_token_file user.screen_name
-      File.open( filepath, "w" ) do |output|
+      File.open( filepath, "w" ) do |input|
         YAML.dump( { "token" => access_token.token,
                      "secret" => access_token.secret },
-             output )
+             input )
       end
     end
 
