@@ -1,19 +1,14 @@
-OMomonga について
-==============================================
+# omomonga
 
-RT しやすすぎるついったークライアント、おばけももんがのつもりです。  
-自動ポストとかもサポートしたいと思ってます＞＜
+A Clojure library designed to ... well, that part is up to you.
 
-## OMomonga の O って？
+## Usage
 
-もちろん「おばけ」の O ですよ。
+FIXME
 
-## 必要な環境
+## License
 
-* Ruby
+Copyright © 2013 FIXME
 
-## 必要なもの
-
-* gtk2
-* twitter
-* oauth (simple_oauth に変えたい)
+Distributed under the Eclipse Public License either version 1.0 or (at
+your option) any later version.

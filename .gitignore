@@ -1,24 +1,14 @@
-# Emacs backup files
-*~
+# Emacs temporary files
 \#*#
+*~
 
-# Ruby files
-*.gem
-*.rbc
-.bundle
-.config
-coverage
-InstalledFiles
-Gemfile.lock
-lib/bundler/man
-pkg
-rdoc
-spec/reports
-test/tmp
-test/version_tmp
-tmp
-
-# YARD artifacts
-.yardoc
-_yardoc
-doc/
+# Lein
+/target
+/classes
+/checkouts
+pom.xml
+pom.xml.asc
+*.jar
+*.class
+/.lein-*
+/.nrepl-port
