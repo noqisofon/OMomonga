@@ -1,4 +1,4 @@
 (ns ghostly.momonga.runner)
 
-(defun +main []
+(defn +main []
   (println "Hello, World!"))
