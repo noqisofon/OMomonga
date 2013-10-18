@@ -1,4 +1,5 @@
-(ns ghostly.momonga.runner)
+(ns ghostly.momonga.runner
+  (:gen-class))
 
-(defn +main []
+(defn -main []
   (println "Hello, World!"))
