@@ -1,5 +1,6 @@
 (ns ghostly.momonga.twitter
-  (:import (twitter4j Status
+  (:import (twitter4j Paging
+                      Status
                       Twitter
                       TwitterException
                       TwitterFactory)
@@ -53,7 +54,7 @@
      (.getFriendsTimeline *twitter* pg)))
 
 
-(defn make-paging [& {page :page cnt :count since-id :since-id max-id :max-id}]
+(defn paging [& {page :page cnt :count since-id :since-id max-id :max-id}]
   (cond
    ((every? nil? [page cnt since-id max-id])
     (Paging.))
