@@ -9,6 +9,32 @@
 (def *twitter* (TwitterFactory/getSingleton))
 
 
+(defn consumer-key-set! [consumer-key consumer-secret]
+  (.setOAuthConsumer *twitter* consumer-key consumer-secret))
+
+
+(defn request-token []
+  (.getOAuthRequestToken *twitter*))
+
+
+(defn authorization-url
+  ([]
+     (let [rtoken (request-token)]
+       (authorization-url rtoken)))
+  ([rtoken]
+     (.getAuthorizationURL rtoken)))
+
+
+(defn access-token [rtoken pin]
+  (let [atoken (.getOAuthAccessToken *twitter* rtoken pin)]
+    (store-access-token atoken)
+    atoken))
+
+
+(defn- store-access-token [atoken]
+  )
+
+
 (defn post [msg]
   (.updateStatus *twitter* msg))
 
