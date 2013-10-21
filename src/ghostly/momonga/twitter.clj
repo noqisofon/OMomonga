@@ -33,7 +33,7 @@
 
 
 (defn- store-access-token [atoken]
-  )
+  nil)
 
 
 (defn post [msg]

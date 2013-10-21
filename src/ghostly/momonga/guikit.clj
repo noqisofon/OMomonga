@@ -12,10 +12,8 @@
                                     Text
                                     Button
                                     Widget
-                                    Control)))
-
-
-(defstruct size :width :height)
+                                    Control))
+  (:use [ghostly.momonga.graphics]))
 
 
 (def *display* (Display.))
@@ -59,17 +57,19 @@
      (.getShells window-only)))
 
 
+(defn window-minimum-size [window-only]
+  (point->size (.getMinimumSize window-only)))
+
+
 (defn window-total-size [window-only]
-  (struct size
-          (. (.getSize window-only) x)
-          (. (.getSize window-only) y))))
+  (point->size (.getSize window-only)))
 
 
 (defn window-total-height [window-only]
-  (let [a-size (window-total-size)]
-    (a-size :height)))
+  (let [a_size (window-total-size)]
+    (a_size :height)))
 
 
 (defn window-total-width [window-only]
-  (let [a-size (window-total-size)]
-    (a-size :width)))
+  (let [a_size (window-total-size)]
+    (a_size :width)))
