@@ -57,19 +57,65 @@
      (.getShells window-only)))
 
 
-(defn window-minimum-size [window-only]
-  (point->size (.getMinimumSize window-only)))
+(defn window-minimum-size
+  ([]
+     (let [active-window (selected-window)]
+       (window-minimum-size active-window)))
+  ([window-only]
+     (point->size (.getMinimumSize window-only))))
 
 
-(defn window-total-size [window-only]
-  (point->size (.getSize window-only)))
+(defn window-total-size
+  ([]
+     (let [active-window (selected-window)]
+       (window-total-size active-window)))
+  ([window-only]
+     (point->size (.getSize window-only))))
 
 
-(defn window-total-height [window-only]
-  (let [a_size (window-total-size)]
-    (a_size :height)))
+(defn window-total-height
+  ([]
+     (let [active-window (selected-window)]
+       (window-total-height active-window)))
+  ([window-only]
+      (let [a_size (window-total-size)]
+        (a_size :height))))
 
 
-(defn window-total-width [window-only]
-  (let [a_size (window-total-size)]
-    (a_size :width)))
+(defn window-total-width
+  ([]
+     (let [active-window (selected-window)]
+       (window-total-width active-window)))
+  ([window-only]
+     (let [a_size (window-total-size)]
+       (a_size :width))))
+
+
+(defn root-window
+  ([]
+     (root-window *display*))
+  ([a_display]
+     (Shell. a_display)))
+
+
+(defn window [& [a_window-style]]
+  (if a_window-style
+    (Shell. *display* a_window-style)
+    ;; else
+    (Shell. *display*)))
+
+
+(defn window-style
+  ([]
+     (let [active-window (selected-window)]
+       (window-style active-window)))
+  ([window-only]
+     (.getStyle window-only)))
+
+
+(defn window-title
+  ([]
+     (let [active-window (selected-window)]
+       (window-title active-window)))
+  ([window-only]
+     (.getText window-only)))
