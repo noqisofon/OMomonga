@@ -37,60 +37,6 @@
   (.isDisposed display-or-widget))
 
 
-(def event-type-symbol-alist
-  {
-   :none SWT/None
-
-   :key-down SWT/KeyDown
-   :key-up SWT/KeyUp
-
-   :mouse-down SWT/MouseDown
-   :mouse-up SWT/MouseUp
-   :mouse-enter SWT/MouseEnter
-   :mouse-hover SWT/MouseHover
-   :mouse-exit SWT/MouseExit
-   :mouse-double-click SWT/MouseDoubleClick
-
-   :paint SWT/Paint
-   :move SWT/Move
-   :resize SWT/Resize
-   :dispose SWT/Dispose
-   :selection SWT/Selection
-
-   :focus-in SWT/FocusIn
-   :focus-out SWT/FocusOut
-
-   :expand SWT/Expand
-   :collapse SWT/Collapse
-   :iconify SWT/Iconify
-
-   :close SWT/Show
-   :hide SWT/Hide
-
-   :modify SWT/Modify
-   :verify SWT/Verify
-
-   :activate SWT/Activate
-   :deactivate SWT/Deactivate
-
-   :drag-detect SWT/DragDetect
-   :menu-detect SWT/MenuDetect
-
-   :arm SWT/Arm
-   :traverse SWT/Traverse
-
-   :hard-key-down SWT/HardKeyDown
-   :hard-key-up SWT/HardKeyUp
-
-   :help SWT/Help
-   })
-
-
-(defn listening? [widget-or-control an_event-type]
-  (let [swt-event-type (event-type-symbol-alist an_event-type)]
-    (.isListening widget-or-control swt-event-type)))
-
-
 (defn widget-data 
   ([widget-or-control]
      (.getData widget-or-control))
@@ -104,11 +50,6 @@
 
 (defn widget-display [widget-or-control]
   (.getDisplay widget-or-control))
-
-
-(defn widget-listeners [widget-or-control an_event-type]
-  (let [swt-event-type (event-type-symbol-alist an_event-type)]
-    (.getListeners widget-or-control swt-event-type)))
 
 
 (defn widget-dispose [widget-or-control]
