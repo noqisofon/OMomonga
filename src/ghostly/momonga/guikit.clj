@@ -36,8 +36,8 @@
   (.isEnabled window-or-control))
 
 
-(defn dispose? [a_widget]
-  (.isDisposed a_widget))
+(defn dispose? [display-or-widget]
+  (.isDisposed display-or-widget))
 
 
 (defn selected-window
@@ -51,7 +51,7 @@
   ([]
      (root-window *display*))
   ([a_display]
-     (.getShell a_display)))
+     (first (.getShells a_display))))
 
 
 (defn window-children
@@ -83,7 +83,7 @@
      (let [active-window (selected-window)]
        (window-height active-window)))
   ([window-only]
-      (let [a_size (window-size)]
+      (let [a_size (window-size window-only)]
         (a_size :height))))
 
 
@@ -92,7 +92,7 @@
      (let [active-window (selected-window)]
        (window-width active-window)))
   ([window-only]
-     (let [a_size (window-size)]
+     (let [a_size (window-size window-only)]
        (a_size :width))))
 
 
@@ -103,10 +103,7 @@
                         (Shell. a_display))]
     (if a_title
       (.setText result-window a_title))
-    (if a_layout
-      (.setLayout result-window a_layout)
-      ;; else
-      (.setLayout result-window (FillLayout.)))
+    (.setLayout result-window (if-absent a_layout (FillLayout.)))
     result-window))
 
 
@@ -115,22 +112,10 @@
 
 
 (defn make-label [widget-or-window & {a_text :text a_style :style}]
-  (let [a_label (Label. widget-or-window (if a_style a_style SWT/NULL))]
+  (let [a_label (Label. widget-or-window (if-absent a_style SWT/NULL))]
     (if a_text
       (.setText a_label a_text))
     a_label))
-
-
-(defn window-pack-and-open
-  ([a_root-window]
-     (doto a_root-window
-       (.pack)
-       (.open)))
-  ([a_root-window a_width a_height]
-     (doto a_root-window
-       (.pack)
-       (.setSize a_width a_height)
-       (.open))))
 
 
 (defn window-style
@@ -147,6 +132,18 @@
        (window-title active-window)))
   ([window-only]
      (.getText window-only)))
+
+
+(defn window-pack-and-open
+  ([a_root-window]
+     (doto a_root-window
+       (.pack)
+       (.open)))
+  ([a_root-window a_width a_height]
+     (doto a_root-window
+       (.pack)
+       (.setMinimumSize a_width a_height)
+       (.open))))
 
 
 (defn main-loop
