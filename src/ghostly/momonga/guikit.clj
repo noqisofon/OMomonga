@@ -42,7 +42,7 @@
      (.getShells window-only)))
 
 
-(defn- inner-window-conpute-size
+(defn- window-conpute-size-aux
   ([window-only a_size]
      (.computeSize window-only
                    (a_size :width)
@@ -92,19 +92,19 @@
 
 (defn set-window-size!
   ([window-only a_size]
-     (let [a_swt_size (inner-window-conpute-size window-only a_size)]
+     (let [a_swt_size (window-conpute-size-aux window-only a_size)]
        (.setSize window-only a_swt_size)))
   ([window-only a_width a_height]
-     (let [a_swt_size (inner-window-conpute-size window-only a_width a_height)]
+     (let [a_swt_size (window-conpute-size-aux window-only a_width a_height)]
        (.setSize window-only a_swt_size))))
 
 
 (defn set-window-minimum-size!
   ([window-only a_size]
-     (let [a_swt_size (inner-window-conpute-size window-only a_size)]
+     (let [a_swt_size (window-conpute-size-aux window-only a_size)]
        (.setMinimumSize window-only a_swt_size)))
   ([window-only a_width a_height]
-     (let [a_swt_size (inner-window-conpute-size window-only a_width a_height)]
+     (let [a_swt_size (window-conpute-size-aux window-only a_width a_height)]
        (.setMinimumSize window-only a_swt_size))))
 
 
@@ -160,7 +160,7 @@
        (a_size :width))))
 
 
-(defn- inner-make-window [a_display & {a_title :title a_style :style a_layout :layout }]
+(defn- window-aux [a_display & {a_title :title a_style :style a_layout :layout }]
   (let [result-window (if a_style
                         (Shell. a_display a_style)
                         ;; else
@@ -171,8 +171,8 @@
     result-window))
 
 
-(defn make-window [& {a_title :title a_style :style a_layout :layout}]
-  (inner-make-window *display* :title a_title :style a_style :layout a_layout))
+(defn window [& {a_title :title a_style :style a_layout :layout}]
+  (window-aux *display* :title a_title :style a_style :layout a_layout))
 
 
 (defn window-style

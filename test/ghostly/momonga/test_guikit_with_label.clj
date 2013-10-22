@@ -14,8 +14,8 @@
 
 
 (deftest sketch_guikit_with_label
-  (let [a_root-window (make-window              :title "Label Demo")
-        a_label       (make-label a_root-window :text "Hello, World!")]
+  (let [a_root-window (window              :title "Label Demo")
+        a_label       (label a_root-window :text "Hello, World!")]
     ;; a_root-window は Shell のインスタンスである。
     (is (instance? Shell a_root-window))
     ;; a_root-window のタイトルの値は "Label Demo" である。
