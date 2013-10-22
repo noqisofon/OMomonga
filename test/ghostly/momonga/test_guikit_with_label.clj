@@ -7,9 +7,10 @@
                                     Shell
                                     Label))
   (:require [clojure.test :refer :all]
-            [ghostly.momonga.macros :refer :all]
             [ghostly.momonga.graphics :refer :all]
-            [ghostly.momonga.guikit :refer :all]))
+            [ghostly.momonga.guikit :refer :all]
+            [ghostly.momonga.guikit.widgets :refer :all]
+            [ghostly.momonga.utils.macros :refer :all]))
 
 
 (deftest sketch_guikit_with_label

@@ -1,4 +1,4 @@
-(ns ghostly.momonga.macros)
+(ns ghostly.momonga.utils.macros)
 
 
 (defmacro if-absent [default-value absent-value]

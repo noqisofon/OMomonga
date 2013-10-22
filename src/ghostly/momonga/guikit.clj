@@ -13,31 +13,11 @@
                                     Button
                                     Widget
                                     Control))
-  (:require [ghostly.momonga.macros :refer :all]
-            [ghostly.momonga.graphics :refer :all]))
+  (:require [ghostly.momonga.graphics :refer :all]
+            [ghostly.momonga.utils.macros :refer :all]))
 
 
 (def ^:dynamic *display* (Display.))
-
-
-(defn widget? [window-or-widget]
-  (instance? Widget window-or-widget))
-
-
-(defn control? [widget-or-control]
-  (instance? Control widget-or-control))
-
-
-(defn window? [widget-or-control]
-  (instance? Shell widget-or-control))
-
-
-(defn enabled? [window-or-control]
-  (.isEnabled window-or-control))
-
-
-(defn dispose? [display-or-widget]
-  (.isDisposed display-or-widget))
 
 
 (defn selected-window
@@ -60,6 +40,15 @@
        (window-children active-window)))
   ([window-only]
      (.getShells window-only)))
+
+
+(defn- inner-window-conpute-size
+  ([window-only a_size]
+     (.computeSize window-only
+                   (a_size :width)
+                   (a_size :height)))
+  ([window-only a_width a_height]
+     (.computeSize window-only a_width a_height)))
 
 
 (defn window-location
@@ -86,21 +75,37 @@
      (.setBounds window-only x y a_width a_height)))
 
 
+(defn set-window-bounds-size!
+  ([window-only a_size]
+     (set-window-bounds! window-only
+                         SWT/DEFAULT
+                         SWT/DEFAULT
+                         (a_size :width)
+                         (a_size :height)))
+  ([window-only a_width a_height]
+     (set-window-bounds! window-only
+                         SWT/DEFAULT
+                         SWT/DEFAULT
+                         a_width
+                         a_height)))
+
+
 (defn set-window-size!
   ([window-only a_size]
-     (let [a_location (window-location window-only)]
-       (set-window-bounds! window-only
-                           (a_location :x)
-                           (a_location :y)
-                           (a_size :width)
-                           (a_size :height))))
+     (let [a_swt_size (inner-window-conpute-size window-only a_size)]
+       (.setSize window-only a_swt_size)))
   ([window-only a_width a_height]
-     (let [a_location (window-location window-only)]
-       (set-window-bounds! window-only
-                           (a_location :x)
-                           (a_location :y)
-                           a_width
-                           a_height))))
+     (let [a_swt_size (inner-window-conpute-size window-only a_width a_height)]
+       (.setSize window-only a_swt_size))))
+
+
+(defn set-window-minimum-size!
+  ([window-only a_size]
+     (let [a_swt_size (inner-window-conpute-size window-only a_size)]
+       (.setMinimumSize window-only a_swt_size)))
+  ([window-only a_width a_height]
+     (let [a_swt_size (inner-window-conpute-size window-only a_width a_height)]
+       (.setMinimumSize window-only a_swt_size))))
 
 
 (defn window-size
@@ -170,13 +175,6 @@
   (inner-make-window *display* :title a_title :style a_style :layout a_layout))
 
 
-(defn make-label [widget-or-window & {a_text :text a_style :style}]
-  (let [a_label (Label. widget-or-window (if-absent a_style SWT/NULL))]
-    (if a_text
-      (.setText a_label a_text))
-    a_label))
-
-
 (defn window-style
   ([]
      (let [active-window (selected-window)]
@@ -193,16 +191,15 @@
      (.getText window-only)))
 
 
-(defn window-pack-and-open
-  ([a_root-window]
-     (doto a_root-window
-       (.pack)
-       (.open)))
-  ([a_root-window a_width a_height]
-     (doto a_root-window
-       (.pack)
-       (.setMinimumSize a_width a_height)
-       (.open))))
+(defn window-pack-and-open [a_root-window & [a_width a_height] ]
+  (if (every? pos? [a_width a_height])
+    (doto a_root-window
+      (.setSize a_width a_height)
+      (.open))
+    ;; else
+    (doto a_root-window
+      (.pack)
+      (.open))))
 
 
 (defn main-loop
