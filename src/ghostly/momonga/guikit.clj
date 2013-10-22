@@ -62,12 +62,45 @@
      (.getShells window-only)))
 
 
-(defn window-minimum-size
+(defn window-location
   ([]
      (let [active-window (selected-window)]
-       (window-minimum-size active-window)))
+       (window-location active-window)))
   ([window-only]
-     (point->size (.getMinimumSize window-only))))
+     (to-point (.getLocation window-only))))
+
+
+(defn window-bounds
+  ([window-only]
+     (to-rectangle (.getBounds window-only))))
+
+
+(defn set-window-bounds!
+  ([window-only a_rectangle]
+     (set-window-bounds! window-only
+                         (a_rectangle :x)
+                         (a_rectangle :y)
+                         (a_rectangle :width)
+                         (a_rectangle :height)))
+  ([window-only x y a_width a_height]
+     (.setBounds window-only x y a_width a_height)))
+
+
+(defn set-window-size!
+  ([window-only a_size]
+     (let [a_location (window-location window-only)]
+       (set-window-bounds! window-only
+                           (a_location :x)
+                           (a_location :y)
+                           (a_size :width)
+                           (a_size :height))))
+  ([window-only a_width a_height]
+     (let [a_location (window-location window-only)]
+       (set-window-bounds! window-only
+                           (a_location :x)
+                           (a_location :y)
+                           a_width
+                           a_height))))
 
 
 (defn window-size
@@ -93,6 +126,32 @@
        (window-width active-window)))
   ([window-only]
      (let [a_size (window-size window-only)]
+       (a_size :width))))
+
+
+(defn window-minimum-size
+  ([]
+     (let [active-window (selected-window)]
+       (window-minimum-size active-window)))
+  ([window-only]
+     (point->size (.getMinimumSize window-only))))
+
+
+(defn window-minimum-height
+  ([]
+     (let [active-window (selected-window)]
+       (window-height active-window)))
+  ([window-only]
+      (let [a_size (window-minimum-size window-only)]
+        (a_size :height))))
+
+
+(defn window-minimum-width
+  ([]
+     (let [active-window (selected-window)]
+       (window-width active-window)))
+  ([window-only]
+     (let [a_size (window-minimum-size window-only)]
        (a_size :width))))
 
 

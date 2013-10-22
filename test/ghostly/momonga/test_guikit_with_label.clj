@@ -1,4 +1,4 @@
-(ns ghostly.momonga.sketch_guikit_with_label
+(ns ghostly.momonga.test_guikit_with_label
   (:import (org.eclipse.swt SWT)
            (org.eclipse.swt.layout FillLayout
                                    GridLayout)
@@ -29,6 +29,14 @@
     (is (= (root-window) a_root-window))
 
     (window-pack-and-open a_root-window 300 100)
+
+    (let [a_location (window-location a_root-window)]
+      ;; a_location は nil ではない。
+      (is (not (nil? a_location)))
+      ;; (a_location :x) は正数である。
+      (is (pos? (a_location :x)))
+      ;; (a_location :y) は正数である。
+      (is (pos? (a_location :y))))
 
     ;; a_root-window の幅は 300 である。
     (is (= 300 (window-width a_root-window)))
