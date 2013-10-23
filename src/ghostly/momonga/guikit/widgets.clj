@@ -1,4 +1,5 @@
 (ns ghostly.momonga.guikit.widgets
+  (:gen-class)
   (:import (org.eclipse.swt SWT)
            (org.eclipse.swt.events SelectionListener)
            (org.eclipse.swt.layout FillLayout

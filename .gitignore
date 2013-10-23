@@ -2,7 +2,7 @@
 \#*#
 *~
 
-# Lein
+# Leiningen
 /target
 /classes
 /checkouts
@@ -12,3 +12,6 @@ pom.xml.asc
 *.class
 /.lein-*
 /.nrepl-port
+
+# Other Files
+*.log
