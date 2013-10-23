@@ -26,16 +26,16 @@
 ;;                   (a_paging :max-id))))
 
 
-(def ^:dynamic *twitter* (TwitterFactory/getSingleton))
+(def the-twitter (TwitterFactory/getSingleton))
 
 
 (defn consumer-key-set! [consumer-key consumer-secret]
-  (.setOAuthConsumer *twitter* consumer-key consumer-secret))
+  (.setOAuthConsumer the-twitter consumer-key consumer-secret))
 
 
 (defn request-token
   ([]
-     (request-token *twitter*))
+     (request-token the-twitter))
   ([a_twitter]
      (.getOAuthRequestToken a_twitter)))
 
@@ -56,7 +56,7 @@
 
 (defn access-token
   ([a_request-token pin]
-     (access-token *twitter* a_request-token pin))
+     (access-token the-twitter a_request-token pin))
   ([a_twitter a_request-token pin]
      (let [an_access-token (.getOAuthAccessToken a_twitter a_request-token pin)]
        (store-access-token an_access-token)
@@ -65,18 +65,18 @@
 
 (defn update
   ([update-message]
-     (update *twitter* update-message))
+     (update the-twitter update-message))
   ([a_twitter update-message]
      (.updateStatus a_twitter update-message)))
 
 
 (defn- home-timeline-aux
   ([]
-     (.getHomeTimeline *twitter*))
+     (.getHomeTimeline the-twitter))
   ;; ([^Twitter a_twitter]
   ;;    (.getHomeTimeline a_twitter))
   ([^Paging a_pading]
-     (.getHomeTimeline *twitter* a_pading))
+     (.getHomeTimeline the-twitter a_pading))
   ([^Twitter a_twitter ^Paging a_pading]
      (.getHomeTimeline a_twitter a_pading)))
 
@@ -96,11 +96,11 @@
 
 (defn- friends-timeline-aux
   ([]
-     (.getFriendsTimeline *twitter*))
+     (.getFriendsTimeline the-twitter))
   ;; ([^Twitter a_twitter]
   ;;    (.getFriendsTimeline a_twitter))
   ([^Paging a_pading]
-     (.getFriendsTimeline *twitter* a_pading))
+     (.getFriendsTimeline the-twitter a_pading))
   ([^Twitter a_twitter ^Paging a_pading]
      (.getFriendsTimeline a_twitter a_pading)))
 
@@ -120,11 +120,11 @@
 
 (defn- mentions-timeline-aux
   ([]
-     (.getMenthionsTimeline *twitter*))
+     (.getMenthionsTimeline the-twitter))
   ;; ([^Twitter a_twitter]
   ;;    (.getMenthionsTimeline a_twitter))
   ([^Paging a_pading]
-     (.getMenthionsTimeline *twitter* a_pading))
+     (.getMenthionsTimeline the-twitter a_pading))
   ([^Twitter a_twitter ^Paging a_pading]
      (.getMenthionsTimeline a_twitter a_pading)))
 
