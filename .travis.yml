@@ -1,0 +1,12 @@
+language: clojure
+lein: lein
+script: lein do install, test
+jdk:
+  - openjdk7
+  - openjdk6
+  - oraclejdk7
+begore_script:
+  - "echo JAVA_HOME:    $JAVA_HOME"
+  - "echo 'which java': `which java`"
+  - "echo JAVA_OPTS:    $JAVA_OPTS"
+  - "export JAVA_OPS=-Xmx1024m"
