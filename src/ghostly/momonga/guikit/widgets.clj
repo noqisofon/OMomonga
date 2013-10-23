@@ -18,6 +18,10 @@
             [ghostly.momonga.utils.macros :refer :all]))
 
 
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+
 (def menu-style-alist
   {
    :bar SWT/BAR
@@ -141,6 +145,9 @@
           :simple SWT/SIMPLE
           }
          composite-style-alist))
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 
 (defn widget? [window-or-widget]

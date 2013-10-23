@@ -18,21 +18,35 @@
             [ghostly.momonga.utils.macros :refer :all]))
 
 
-(def ^:dynamic *display* (Display.))
+(defmacro in-display
+  "bindings => [name]"
+  [bindings & body]
+  (cond
+   (= (count bindings) 0) `(do
+                             ~@body)
+   (symbol? (bindings 0)) `(let [~(bindings 0) (Display.)]
+                             (try
+                               (do
+                                 ~@body)
+                               (finally
+                                 (.dispose ~(bindings 0)))))))
 
 
-(defn selected-window
-  ([]
-     (selected-window *display*))
-  ([a_display]
-     (.getActiveShell a_display)))
+(defmacro with-widget [bindings & body]
+  (cond
+   (= (count bindings) 0) `(do
+                             ~@body)
+   (symbol? (bindings 0)) `(let ~(subvec bindings 0 2)
+                             (do
+                               ~@body))))
 
 
-(defn root-window
-  ([]
-     (root-window *display*))
-  ([a_display]
-     (first (.getShells a_display))))
+(defn selected-window [a_display]
+  (.getActiveShell a_display))
+
+
+(defn root-window [a_display]
+  (first (.getShells a_display)))
 
 
 (defn window-children
@@ -161,7 +175,7 @@
        (a_size :width))))
 
 
-(defn- window-aux [a_display & {a_title :title a_style :style a_layout :layout }]
+(defn window [a_display & {a_title :title a_style :style a_layout :layout }]
   (let [result-window (if a_style
                         (Shell. a_display a_style)
                         ;; else
@@ -170,10 +184,6 @@
       (.setText result-window a_title))
     (.setLayout result-window (if-absent a_layout (FillLayout.)))
     result-window))
-
-
-(defn window [& {a_title :title a_style :style a_layout :layout}]
-  (window-aux *display* :title a_title :style a_style :layout a_layout))
 
 
 (defn window-style
@@ -203,15 +213,9 @@
       (.open))))
 
 
-(defn main-loop
-  ([]
-     (let [a_root-window (root-window)]
-       (main-loop *display* a_root-window)))
-  ([a_root-window]
-     (main-loop *display* a_root-window))
-  ([a_display a_root-window]
-     (until (.isDisposed a_root-window)
-            (do
-              (if-not (.readAndDispatch a_display)
-                (.sleep a_display))))
-     (.dispose a_display)))
+(defn main-loop [a_display a_root-window]
+  (until (.isDisposed a_root-window)
+         (do
+           (if-not (.readAndDispatch a_display)
+             (.sleep a_display))))
+  (.dispose a_display))
