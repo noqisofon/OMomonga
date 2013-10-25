@@ -207,13 +207,12 @@
       (assert (every? symbol? a_styles))
       ;; a_style-alist のキーではないキーワードが入っている場合は nil が含まれているので、
       ;; フィルタリングします。
-      (reduce bit-or #(filter (not (nil? %)) (map a_style-alist a_styles))))
+      (reduce bit-or (filter #(not (nil? %)) (map a_style-alist a_styles))))
     ;; else
-    (do
-      (if (nil? a_styles)
-        SWT/NULL
-        ;; else
-        (a_style-alist a_styles)))))
+    (if (nil? a_styles)
+      SWT/NULL
+      ;; else
+      (a_style-alist a_styles))))
 
 
 (defn label [widget-or-window & {a_text :text a_styles :style}]

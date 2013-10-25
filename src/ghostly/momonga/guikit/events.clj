@@ -17,6 +17,9 @@
             [ghostly.momonga.utils.macros :refer :all]))
 
 
+(defstruct event :data :display :time :widget)
+
+
 (def event-type-symbol-alist
   {
    :none SWT/None
@@ -34,7 +37,6 @@
    :paint SWT/Paint
    :move SWT/Move
    :resize SWT/Resize
-   :dispose SWT/Dispose
    :selection SWT/Selection
 
    :focus-in SWT/FocusIn
@@ -44,11 +46,13 @@
    :collapse SWT/Collapse
    :iconify SWT/Iconify
 
-   :close SWT/Show
-   :hide SWT/Hide
-
+   :close SWT/Close
+   :dispose SWT/Dispose
    :modify SWT/Modify
    :verify SWT/Verify
+
+   :show SWT/Show
+   :hide SWT/Hide
 
    :activate SWT/Activate
    :deactivate SWT/Deactivate
@@ -67,20 +71,32 @@
 
 
 (defn listening? [widget-or-control an_event-type]
+  ;; widget-or-control は Widget または Control 
+  (assert (or (widget? widget-or-control)
+              (control? widget-or-control)))
+  (assert (symbol? an_event-type))
   (let [swt-event-type (event-type-symbol-alist an_event-type)]
+  (assert (or (widget? widget-or-control)
+              (control? widget-or-control)))
     (.isListening widget-or-control swt-event-type)))
 
 
 (defn widget-listeners [widget-or-control an_event-type]
+  (assert (or (widget? widget-or-control)
+              (control? widget-or-control)))
   (let [swt-event-type (event-type-symbol-alist an_event-type)]
     (.getListeners widget-or-control swt-event-type)))
 
 
 (defn widget-notify [widget-or-control an_event-type an_event]
+  (assert (or (widget? widget-or-control)
+              (control? widget-or-control)))
   (.notifyListener widget-or-control (event-type-symbol-alist an_event-type) an_event))
 
 
 (defn widget-dispose-hook [widget-or-control hook-fn]
+  (assert (or (widget? widget-or-control)
+              (control? widget-or-control)))
   (let [a_dipose-listener (reify DisposeListener
                             (widgetDisposed [this a_dispose-event]
                               (hook-fn this a_dispose-event)))]
@@ -89,6 +105,8 @@
 
 
 (defn widget-listener-hook [widget-or-control an_event-type hook-fn]
+  (assert (or (widget? widget-or-control)
+              (control? widget-or-control)))
   (let [an_listener (reify Listener
                       (handleEvent [this an_event]
                         (hook-fn this an_event)))
