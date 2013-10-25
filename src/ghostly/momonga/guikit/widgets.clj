@@ -18,7 +18,6 @@
             [ghostly.momonga.utils.macros :refer :all]))
 
 
-
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 
@@ -168,6 +167,18 @@
 
 (defn dispose? [display-or-widget]
   (.isDisposed display-or-widget))
+
+
+(defn focus-control? [a_control]
+  (.isFocusControl a_control))
+
+
+(defn reparentable? [a_control]
+  (.isReparentable a_control))
+
+
+(defn visible? [a_control]
+  (.isVisible a_control))
 
 
 (defn widget-data 

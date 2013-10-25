@@ -18,27 +18,42 @@
             [ghostly.momonga.utils.macros :refer :all]))
 
 
-(defmacro in-display
-  "bindings => [name]"
-  [bindings & body]
+;; (defmacro in-display "bindings => [name]" [bindings & body]
+;;   (cond
+;;    (= (count bindings) 0) `(do
+;;                              ~@body)
+;;    (symbol? (bindings 0)) `(let [~(bindings 0) (Display.)]
+;;                              (try
+;;                                (do
+;;                                  ~@body)
+;;                                (finally
+;;                                  (.dispose ~(bindings 0)))))))
+
+
+;; (defmacro with-widget [bindings & body]
+;;   (cond
+;;    (= (count bindings) 0) `(do
+;;                              ~@body)
+;;    (symbol? (bindings 0)) `(let ~(subvec bindings 0 2)
+;;                              (do
+;;                                ~@body))))
+
+
+(defmacro within-main-loop "bindings => [display-name]" [bindings & body]
   (cond
    (= (count bindings) 0) `(do
                              ~@body)
    (symbol? (bindings 0)) `(let [~(bindings 0) (Display.)]
-                             (try
-                               (do
-                                 ~@body)
-                               (finally
-                                 (.dispose ~(bindings 0)))))))
-
-
-(defmacro with-widget [bindings & body]
-  (cond
-   (= (count bindings) 0) `(do
-                             ~@body)
-   (symbol? (bindings 0)) `(let ~(subvec bindings 0 2)
                              (do
-                               ~@body))))
+                               ~@body)
+                             (let [~'root-window (first (.getShells ~(bindings 0)))]
+                               (.pack ~'root-window)
+                               (.open ~'root-window)
+                               (until (.isDisposed ~'root-window)
+                                      (do
+                                        (if-not (.readAndDispatch ~(bindings 0))
+                                          (.sleep ~(bindings 0)))))
+                               (.dispose ~(bindings 0))))))
 
 
 (defn selected-window [a_display]
