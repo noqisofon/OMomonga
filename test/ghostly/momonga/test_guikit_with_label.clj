@@ -1,11 +1,11 @@
 (ns ghostly.momonga.test_guikit_with_label
-  (:import (org.eclipse.swt SWT)
-           (org.eclipse.swt.layout FillLayout
-                                   GridLayout)
-           (org.eclipse.swt.graphics Point)
-           (org.eclipse.swt.widgets Display
-                                    Shell
-                                    Label))
+  ;; (:import (org.eclipse.swt SWT)
+  ;;          (org.eclipse.swt.layout FillLayout
+  ;;                                  GridLayout)
+  ;;          (org.eclipse.swt.graphics Point)
+  ;;          (org.eclipse.swt.widgets Display
+  ;;                                   Shell
+  ;;                                   Label))
   (:require [clojure.test :refer :all]
             [ghostly.momonga.graphics :refer :all]
             [ghostly.momonga.guikit :refer :all]
@@ -64,7 +64,20 @@
                                           :title "Label Demo"
                                           :default-width 300
                                           :default-height 100)
-                            label (label shell :text "Hello, World!")]
+                            a_label (label shell :text "Hello, World!")]
+                        ;; shell は Shell のインスタンスである。
+                        (is (window? shell))
+                        ;; shell のタイトルの値は "Label Demo" である。
+                        (is (= "Label Demo" (control-text shell)))
+
+                        ;; a_label は Label のインスタンスである。
+                        (is (label? a_label))
+                        ;; a_label のテキストの値は "Hello, World!" である。
+                        (is (= "Hello, World!" (control-text a_label)))
+
+                        ;; root-window の戻り値と window の戻り値である shell は同一である。
+                        (is (= (root-window display) shell))
+
                         ;; テストのため、すぐに窓を閉じるようにする。
                         (.timerExec display 1 (reify Runnable
                                                 (run [this]

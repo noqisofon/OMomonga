@@ -146,9 +146,31 @@
          composite-style-alist))
 
 
+(defn- to-swt-style-value [a_style-alist a_styles]
+  (if (seq? a_styles)
+    (do
+      ;; a_styles の要素は全てシンボルであること。
+      (assert (every? symbol? a_styles))
+      ;; a_style-alist のキーではないキーワードが入っている場合は nil が含まれているので、
+      ;; フィルタリングします。
+      (reduce bit-or (filter #(not (nil? %)) (map a_style-alist a_styles))))
+    ;; else
+    (if (nil? a_styles)
+      SWT/NULL
+      ;; else
+      (a_style-alist a_styles))))
+
+
+(defn- to-style-value [a_style-alist swt-style-value]
+  (let [reverse-alist (apply assoc {} (interleave (vals a_style-alist) (keys a_style-alist)))
+        has-vlist (filter #(pos? %) (map #(bit-and (a_style-alist %) swt-style-value) (keys a_style-alist)))]
+    (map #(get reverse-alist %) has-vlist)))
+
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-
+;;
+;; Widget 関連
+;;
 (defn widget? [window-or-widget]
   (instance? Widget window-or-widget))
 
@@ -169,18 +191,6 @@
   (.isDisposed display-or-widget))
 
 
-(defn focus-control? [a_control]
-  (.isFocusControl a_control))
-
-
-(defn reparentable? [a_control]
-  (.isReparentable a_control))
-
-
-(defn visible? [a_control]
-  (.isVisible a_control))
-
-
 (defn widget-data 
   ([widget-or-control]
      (.getData widget-or-control))
@@ -189,7 +199,7 @@
 
 
 (defn widget-style [widget-or-control]
-  (.getStyle widget-or-control))
+  (to-style-value (.getStyle widget-or-control)))
 
 
 (defn widget-display [widget-or-control]
@@ -211,19 +221,40 @@
     (.setData widget-or-control (str a_key) a_data)))
 
 
-(defn- to-swt-style-value [a_style-alist a_styles]
-  (if (seq? a_styles)
-    (do
-      ;; a_styles の要素は全てシンボルであること。
-      (assert (every? symbol? a_styles))
-      ;; a_style-alist のキーではないキーワードが入っている場合は nil が含まれているので、
-      ;; フィルタリングします。
-      (reduce bit-or (filter #(not (nil? %)) (map a_style-alist a_styles))))
-    ;; else
-    (if (nil? a_styles)
-      SWT/NULL
-      ;; else
-      (a_style-alist a_styles))))
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
+;; Control 関連
+;;
+(defn focus-control? [a_control]
+  (.isFocusControl a_control))
+
+
+(defn reparentable? [a_control]
+  (.isReparentable a_control))
+
+
+(defn visible? [a_control]
+  (.isVisible a_control))
+
+
+(defn control-font [a_control]
+  (.getFont a_control))
+
+
+(defn control-text [a_control]
+  (.getText a_control))
+
+
+(defn control-parent [a_control]
+  (.getParent a_control))
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
+;; Label 関連
+;;
+(defn label? [label-or-control]
+  (instance? Label label-or-control))
 
 
 (defn label [widget-or-window & {a_text :text a_styles :style}]
@@ -232,3 +263,18 @@
     (if a_text
       (.setText a_label a_text))
     a_label))
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
+;; Button 関連
+;;
+(defn button? [button-or-control]
+  (instance? Button button-or-control))
+
+
+(defn button [parent-window & {a_label :label}]
+  (let [a_button (Button. parent-window SWT/NULL)]
+    (if a_label
+      (.setText a_button a_label))
+    a_button))
