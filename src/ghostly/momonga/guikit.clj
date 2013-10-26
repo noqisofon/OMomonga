@@ -197,7 +197,13 @@
                         (Shell. a_display))]
     (if a_title
       (.setText result-window a_title))
-    (.setLayout result-window (if-absent a_layout (FillLayout.)))
+    (condp = a_layout
+     (:grid-layout
+      (.setLayout result-window (GridLayout.)))
+     (:fill-layout
+      (.setLayout result-window (FillLayout.)))
+     ;; else
+     (.setLayout result-window (FillLayout.)))
     result-window))
 
 

@@ -1,0 +1,27 @@
+#!/bin/env ruby
+# -*- mode: ruby; coding: utf-8; -*-
+require 'optparse'
+
+
+parser = OptionParser.new
+opts = { :srcdir => [ File.expand_path( "../src" ) ] }
+
+# parse.on '--debug', '-d' do |debug|
+#   opts[:debug] = debug
+# end
+
+parser.on '--src-dir PATH' do |src_dir|
+  opts[:srcdir] = File.expand_path src_dir
+end
+
+parser.parse! ARGV
+
+clojure_file = ARGV[0]
+
+if opts[:srcdir].size > 1 then
+  classpath = opts[:srcdir].join ':'
+else
+  classpath = opts[:srcdir].first
+end
+
+system "clj --classpath \"#{classpath}\" #{clojure_file}"
