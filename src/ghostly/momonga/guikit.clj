@@ -199,7 +199,7 @@
       (.setText result-window a_title))
     (condp = a_layout
      (:grid-layout
-      (.setLayout result-window (GridLayout.)))
+      (.setLayout result-window (GridLayout. 1 true)))
      (:fill-layout
       (.setLayout result-window (FillLayout.)))
      ;; else
