@@ -1,3 +1,5 @@
-# Introduction to omomonga
+いんとろだくしょん・とぅ・お化けももんが
+----------------------------------------------------------------
 
-TODO: write [great documentation](http://jacobian.org/writing/great-documentation/what-to-write/)
+お化けモモンガは mikutter を写経するプロジェクトから派生しました。  
+そして、更新されなくなり、2013 年 10 17 日、Clojure でついったークライアント作ろうずプロジェクトとして生まれ変わりました。
