@@ -393,7 +393,7 @@
         :subcategory nil
         :added "0.1" }
   control-font
-  "コントロールのフォントを帰します。"
+  "コントロールのフォントを返します。"
   [a_control]
   (.getFont a_control))
 
@@ -413,7 +413,7 @@
         :subcategory nil
         :added "0.1" }
   control-parent
-  "古ントロールの親を返します。"
+  "コントロールの親を返します。"
   [a_control]
   (.getParent a_control))
 
