@@ -59,8 +59,8 @@
                 (.setSize 200 100)
                 (.open))
 
-              ;; (while (not (.isDisposed shell))
-              ;;   (do
-              ;;     (if-not (.readAndDispatch display)
-              ;;       (.sleep display))))
+              (while (not (.isDisposed shell))
+                (do
+                  (if-not (.readAndDispatch display)
+                    (.sleep display))))
               ))

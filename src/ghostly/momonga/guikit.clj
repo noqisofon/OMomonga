@@ -15,6 +15,7 @@
                                     Widget
                                     Control))
   (:require [ghostly.momonga.graphics :refer :all]
+            [ghostly.momonga.guikit.layout :refer :all]
             [ghostly.momonga.utils.macros :refer :all]))
 
 
@@ -190,20 +191,16 @@
        (a_size :width))))
 
 
-(defn window [a_display & {a_title :title a_style :style a_layout :layout }]
+(defn window [a_display & {a_title :title a_style :style a_layout :layout}]
   (let [result-window (if a_style
                         (Shell. a_display a_style)
                         ;; else
                         (Shell. a_display))]
     (if a_title
       (.setText result-window a_title))
-    (condp = a_layout
-     (:grid-layout
-      (.setLayout result-window (GridLayout. 1 true)))
-     (:fill-layout
-      (.setLayout result-window (FillLayout.)))
-     ;; else
-     (.setLayout result-window (FillLayout.)))
+    (cond (grid-layout? a_layout) (.setLayout result-window (asGridLayout a_layout))
+          (fill-layout? a_layout) (.setLayout result-window (asFillLayout a_layout))
+          :else (.setLayout result-window (FillLayout.)))
     result-window))
 
 

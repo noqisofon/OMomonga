@@ -17,6 +17,7 @@
                                     Widget
                                     Control))
   (:require [ghostly.momonga.graphics :refer :all]
+            [ghostly.momonga.guikit.layout :refer :all]
             [ghostly.momonga.utils.macros :refer :all]))
 
 
@@ -171,67 +172,6 @@
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;
-;; Layout 関連
-;;
-(defstruct fill-layout :margin-height :margin-width :spacing :type)
-
-
-(defn ^{:requires-bindings true
-        :category "convertion"
-        :subcategory nil
-        :added "0.1" }
-  to-fill-layout
-  "org.eclipse.swt.layout.FillLayout を struct fill-layout に変換して返します。"
-  [^FillLayout a_layout]
-  (struct fill-layout
-          (. a_layout marginHeight)
-          (. a_layout marginWidth)
-          (. a_layout spacing)
-          (. a_layout type)))
-
-
-(defstruct grid-layout
-  :horizontal-alignment :vertical-alignment
-  :width-hint :height-hint
-  :horizontal-indent :verical-indent
-  :horizontal-span :verical-span
-  :grab-excess-horizontal-space :grab-excess-vertical-space
-  :minimum-width :minimum-height
-  :exclude)
-
-
-(defn ^{:requires-bindings true
-        :category "instance creation"
-        :subcategory nil
-        :added "0.1" }
-  make-grid-layout
-  "キーワードと引数から struct grid-layout を作成して返します。"
-  [ & {horizontal-alignment :horizontal-alignment
-       vertical-alignment :vertical-alignment
-       width-hint :width-hint
-       height-hint :height-hint
-       horizontal-indent :horizontal-indent
-       verical-indent :verical-indent
-       horizontal-span :horizontal-span
-       verical-span :verical-span
-       grab-excess-horizontal-space :grab-excess-horizontal-space
-       grab-excess-vertical-space :grab-excess-vertical-space
-       minimum-width :minimum-width
-       minimum-height :minimum-height
-       exclude :exclude}]
-  (struct grid-layout
-          horizontal-alignment vertical-alignment
-          width-hint height-hint
-          horizontal-indent verical-indent
-          horizontal-span verical-span
-          grab-excess-horizontal-space grab-excess-vertical-space
-          minimum-width minimum-height
-          exclude))
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -438,7 +378,7 @@
          :added "0.1" }
   label
   "親窓を受け取り、ラベルオブジェクトを作成して返します。"
-  [widget-or-window & {a_text :text a_styles :style}]
+  [widget-or-window & {a_text :text a_styles :style a_grid-data :grid-data}]
   (let [swt-style-value (to-swt-style-value label-style-alist a_styles)
         a_label (Label. widget-or-window swt-style-value)]
     (if a_text
@@ -466,7 +406,7 @@
         :added "0.1" }
   text
   "親窓を受け取り、テキストオブジェクトを作成して返します。"
-  [widget-or-window & {a_text :text a_styles :style}]
+  [widget-or-window & {a_text :text a_styles :style a_grid-data :grid-data}]
   (let [swt-style-value (to-swt-style-value label-style-alist a_styles)
         a_label (Text. widget-or-window swt-style-value)]
     (if a_text
@@ -494,8 +434,10 @@
         :added "0.1" }
   button
   "親窓を受け取り、ボタンオブジェクトを作成して返します。"
-  [parent-window & {a_label :label}]
+  [parent-window & {a_label :label a_text :text a_grid-data :grid-data}]
   (let [a_button (Button. parent-window SWT/NULL)]
+    (if a_text
+      (.setText a_button a_text))
     (if a_label
       (.setText a_button a_label))
     a_button))
