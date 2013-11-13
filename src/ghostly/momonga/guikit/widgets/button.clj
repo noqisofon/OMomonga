@@ -45,9 +45,8 @@
         (assert (string? a_text))
         (.setText result-button a_text)))
     (if a_layout-data
-      (cond
-       (grid-data? a_layout-data) (.setLayoutData (asGridData a_layout-data))
-       :else nil))
+      (cond (grid-data? a_layout-data) (.setLayoutData (asGridData a_layout-data))
+            :else nil))
     (if a_label
       (.setText result-button a_label))
     result-button))

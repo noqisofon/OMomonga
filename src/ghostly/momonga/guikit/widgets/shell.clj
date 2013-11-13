@@ -17,16 +17,33 @@
             [ghostly.momonga.utils.macros :refer :all]))
 
 
-(defn  ^{:requires-bindings true
+(defn ^{:requires-bindings true
+        :category "testing functionality"
+        :subcategory "instance typing"
+        :added "0.1" }
+  window?
+  "引数 widget-or-control が Shell のインスタンスならば真を返します。"
+  [widget-or-control]
+  (instance? Shell widget-or-control))
+
+
+(defn ^{:requires-bindings true
         :category "instance creation"
         :subcategory nil
         :added "0.1" }
   window
   "シェルオブジェクトを作成します。"
-  [a_display & {a_title :title a_style :size a_size :style a_layout :layout}]
-  (let [result-window (Shell. a_display)]
-    (if a_style
-      (.setSize result-window (to-swt-style-value shell-style-alist a_style)))
+  [a_display & {a_parent :parent a_title :title a_style :size a_size :style a_layout :layout}]
+  (let [result-window (if a_parent
+                        (if a_style
+                          (Shell. a_parent (to-swt-style-value shell-style-alist a_style))
+                          ;; else
+                          (Shell. a_parent))
+                        ;; else
+                        (if a_style
+                          (Shell. a_display (to-swt-style-value shell-style-alist a_style))
+                          ;; else
+                          (Shell. a_display)))]
     (if a_title
       (.setText result-window a_title))
     (if a_size
