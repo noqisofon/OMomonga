@@ -1,7 +1,7 @@
 (ns ^{:doc "スタイルの定数？とそれ用の低レベルな API 群です。"
       :author "Ned Rihine" }
-  ghostly.momonga.guikit.widgets.styles
-  (:import (org.eclipse.swt SWT))
+  ghostly.momonga.guikit.styles
+  (:import (org.eclipse.swt SWT)))
 
 
 (def menu-style-alist

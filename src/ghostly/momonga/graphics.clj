@@ -32,3 +32,6 @@
           (. a_rectangle y)
           (. a_rectangle width)
           (. a_rectangle height)))
+
+(defn asPoint [a_point]
+  (Point. (a_point :x)  (a_point :y)))

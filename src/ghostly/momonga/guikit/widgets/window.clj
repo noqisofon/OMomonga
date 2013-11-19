@@ -1,6 +1,6 @@
 (ns ^{:doc "窓用の API 群です。"
       :author "Ned Rihine" }
-  ghostly.momonga.guikit.widgets.shell
+  ghostly.momonga.guikit.widgets.window
   (:gen-class)
   (:import (org.eclipse.swt SWT)
            (org.eclipse.swt.events SelectionListener)
@@ -12,8 +12,8 @@
                                     Shell))
   (:require [ghostly.momonga.graphics :refer :all]
             [ghostly.momonga.guikit.layout :refer :all]
+            [ghostly.momonga.guikit.styles :refer :all]
             [ghostly.momonga.guikit.widgets :refer :all]
-            [ghostly.momonga.guikit.widgets.styles :refer :all]
             [ghostly.momonga.utils.macros :refer :all]))
 
 

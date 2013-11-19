@@ -1,19 +1,5 @@
 (ns ghostly.momonga.guikit
   (:gen-class)
-  (:import (org.eclipse.swt SWT)
-           (org.eclipse.swt.events SelectionListener)
-           (org.eclipse.swt.layout FillLayout
-                                   GridLayout
-                                   GridData)
-           (org.eclipse.swt.graphics Point)
-           (org.eclipse.swt.widgets Display
-                                    Shell
-                                    Label
-                                    Link
-                                    Text
-                                    Button
-                                    Widget
-                                    Control))
   (:require [ghostly.momonga.graphics :refer :all]
             [ghostly.momonga.guikit.layout :refer :all]
             [ghostly.momonga.guikit.widgets :refer :all]

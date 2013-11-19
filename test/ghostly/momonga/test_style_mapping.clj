@@ -1,7 +1,8 @@
 (ns ghostly.momonga.test_style_mapping
   (:import (org.eclipse.swt SWT))
   (:require [clojure.test :refer :all]
-            [ghostly.momonga.guikit.widgets :refer :all]))
+            [ghostly.momonga.guikit.widgets :refer :all]
+            [ghostly.momonga.guikit.styles :refer :all]))
 
 
 (deftest style_mapping
@@ -28,11 +29,6 @@
            (reduce bit-or (filter #(not (nil? %)) (map scrollable-style-alist [:h-scroll :v-scroll]))))))
 
   (testing "to-style-value が成功すること"
-    (with-test
-      (defn to-style-value [a_style-alist swt-style-value]
-        (let [reverse-alist (apply assoc {} (interleave (vals a_style-alist) (keys a_style-alist)))
-              has-vlist (filter #(pos? %) (map #(bit-and (a_style-alist %) swt-style-value) (keys a_style-alist)))]
-          (map #(get reverse-alist %) has-vlist)))
 
       (is [:no-background :no-focus :no-redraw-resize :no-merge-paints :no-radio-group]
-          (to-style-value composite-style-alist (bit-or SWT/NO_BACKGROUND SWT/NO_FOCUS SWT/NO_REDRAW_RESIZE SWT/NO_MERGE_PAINTS SWT/NO_RADIO_GROUP))))))
+          (to-style-value composite-style-alist (bit-or SWT/NO_BACKGROUND SWT/NO_FOCUS SWT/NO_REDRAW_RESIZE SWT/NO_MERGE_PAINTS SWT/NO_RADIO_GROUP)))))
