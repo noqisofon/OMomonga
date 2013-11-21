@@ -7,7 +7,6 @@
            (org.eclipse.swt.widgets Display
                                     Shell))
   (:require [ghostly.momonga.graphics :refer :all]
-            [ghostly.momonga.guikit.events :refer :all]
             [ghostly.momonga.guikit.layout :refer :all]
             [ghostly.momonga.guikit.styles :refer :all]
             [ghostly.momonga.utils.macros :refer :all]))
@@ -15,46 +14,31 @@
 
 (defprotocol Widget
   ""
-  (add-dispose-listener [this hook-fn] "ウィジェットにディスポーズリスナーを追加します。")
-  (add-listener [this event-type hook-fn] "ウィジェットにリスナーを追加します。")
   (dispose [this] "ウィジェットを破棄します。")
   (data [this] [this key] "ウィジェットに関連付けられたデータを取得します。")
   (display [this] "ウィジェットに関連付けられているディスプレイオブジェクトを返します。")
-  (listeners [this event-type] "ウィジェットに関連付けられているリスナーの配列を返します。")
   (style [this] "ウィジェットに設定されているスタイルを返します。")
   (dispose? [this] "ウィジェットが破棄されていた際に真を返します。")
-  (listening? [this event-type] "指定されたイベントタイプをウィジェットがリスニングしていたら真を返します。")
-  (notify-listeners [this event-type an_event] "イベントタイプとイベントを指定してウィジェットに関連付けられているリスナーを実行させます。")
-  (remove-dispose-listener [this listener] "ウィジェットに追加されたディスポーズリスナーを削除します。")
-  (remove-listener [this event-type listener] "ウィジェットに追加されたリスナーを削除します。")
   (reskin [this flags] "スキンを変更します？")
   (set-data! [this a_data] [this key a_data] "ウィジェットにデータを関連付けます。")
   (widget? [this] "ウィジェットなら真を返します。"))
 
 
+(defprotocol Control
+  ""
+  (compute-size [this width-hint height-hint] [this width-hint height-hint changed] "渡された幅と高さからコントロールのサイズを計算して返します。")
+  (background-color [this] "コントロールの背景色を返します。")
+  (background-image [this] "コントロールの背景イメージを返します。")
+  (cursor [this] "カーソルオブジェクトを返します。")
+  (border-width [this] "線の幅を返します。")
+  (bounds [this] "コントロールの位置とサイズを表す rectangle 構造体を返します。")
+  (font [this] "コントロールに設定されているフォントを返します。")
+  (foreground-color [this] "コントロールの文字色を返します。")
+  (layout-data [this] "コントロールに設定されているレイアウトデータを返します。"))
+
+
 (extend-type org.eclipse.swt.widgets.Widget
   Widget
-  (add-dispose-listener [this hook-fn]
-    ;; hook-fn は何らかの関数である。
-    (assert (fn? hook-fn))
-    (let [a_dipose-listener (reify org.eclipse.swt.events.DisposeListener
-                              (widgetDisposed [self a_dispose-event]
-                                (hook-fn self (as-type-event a_dispose-event))))]
-      (.addDisposeListener this a_dipose-listener)
-      a_dipose-listener))
-
-  (add-listener [this event-type hook-fn]
-    ;; event-type はキーワードである。
-    (assert (keyword? event-type))
-    ;; hook-fn は何らかの関数である。
-    (assert (fn? hook-fn))
-    (let [an_listener (reify org.eclipse.swt.widgets.Listener
-                        (handleEvent [this an_event]
-                          (hook-fn this (as-event an_event))))
-          swt-event-type (event-type-symbol-alist event-type)]
-      (.addListener this swt-event-type an_listener)
-      an_listener))
-
   (dispose [this]
     (.dispose this))
 
@@ -66,46 +50,54 @@
   (display [this]
     (.getDisplay this))
 
-  (listeners [this event-type]
-    ;; event-type はキーワードである。
-    (assert (keyword? event-type))
-    (let [swt-event-type (event-type-symbol-alist event-type)]
-      (.getListeners this swt-event-type)))
-
   (style [this]
     (to-style-value (.getStyle this)))
 
   (dispose? [this]
     (.isDisposed this))
 
-  (listening? [this event-type]
-    ;; event-type はキーワードである。
-    (assert (keyword? event-type))
-    (let [swt-event-type (event-type-symbol-alist event-type)]
-      (.isListening this swt-event-type)))
-
-  (notify-listeners [this event-type an_event]
-    ;; event-type はキーワードである。
-    (assert (keyword? event-type))
-    (.notifyListener this (event-type-symbol-alist event-type) an_event))
-
-  (remove-dispose-listener [this listener]
-    (.removeDisposeListener this listener))
-
-  (remove-listener [this event-type listener]
-    ;; event-type はキーワードである。
-    (assert (keyword? event-type))
-    (let [swt-event-type (event-type-symbol-alist event-type)]
-      (.removeListener this swt-event-type listener)))
-
   (reskin [this flags]
     (.reskin this flags))
 
   (set-data! [this a_data]
     (.setData this a_data))
-
   (set-data! [this key a_data]
     (.setData this key a_data))
 
   (widget? [this]
-     (instance? org.eclipse.swt.widgets.Widget this)))
+     (instance? org.eclipse.swt.widgets.Widget this))
+
+  Control
+  (compute-size [this width-hint height-hint]
+    (Point->size (.computeSize this width-hint height-hint)))
+  (compute-size  [this width-hint height-hint changed]
+    (Point->size (.computeSize this width-hint height-hint changed)))
+
+  (background-color [this]
+    (Color->color (.getBackgroundColor this)))
+
+  (background-image [this]
+    (.getBackgroundImage this))
+
+  (cursor [this]
+    (getCursor this))
+
+  (border-width [this]
+    (.getBorderWidth this))
+
+  (bounds [this]
+    (Rectangle->rectangle (.getBounds this)))
+
+  (font [this]
+    (.getFont this))
+
+  (foreground-color [this]
+    (.getForegroundColor this))
+
+  (layout-data [this]
+    (let [a_layout-data (.getLayoutData this)]
+      (cond
+       ;;(instance? org.eclipse.swt.layout.FormData a_layout-data) (to-form-data a_layout-data)
+       (instance? org.eclipse.swt.layout.GridData a_layout-data) (to-grid-data a_layout-data)
+       ;;(instance? org.eclipse.swt.layout.RowData a_layout-data) (to-row-layout a_layout-data)
+       (:else a_layout-data)))))

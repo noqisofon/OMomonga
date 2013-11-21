@@ -4,8 +4,7 @@
                                    SelectionListener
                                    SelectionEvent
                                    TypedEvent)
-           (org.eclipse.swt.widgets 
-                                    Listener
+           (org.eclipse.swt.widgets Listener
                                     Event))
   (:require [ghostly.momonga.graphics :refer :all]
             [ghostly.momonga.utils.macros :refer :all]))
@@ -123,3 +122,57 @@
 
    :help SWT/Help
    })
+
+(defprotocol ListenTarget
+  ""
+  (add-dispose-listener [this hook-fn] "リッスンターゲットにディスポーズリスナーを追加します。")
+  (add-listener [this event-type hook-fn] "リッスンターゲットにリスナーを追加します。")
+  (listeners [this event-type] "ウィジェットに関連付けられているリスナーの配列を返します。")
+  (listening? [this event-type] "指定されたイベントタイプをウィジェットがリスニングしていたら真を返します。")
+  (notify-listeners [this event-type an_event] "イベントタイプとイベントを指定してウィジェットに関連付けられているリスナーを実行させます。")
+  (remove-dispose-listener [this listener] "ウィジェットに追加されたディスポーズリスナーを削除します。")
+  (remove-listener [this event-type listener] "ウィジェットに追加されたリスナーを削除します。"))
+
+
+(extend-type org.eclipse.swt.widgets.Widget
+  ListenTarget
+
+  (add-dispose-listener [this hook-fn]
+    (assert (fn? hook-fn))
+    (let [a_dipose-listener (reify org.eclipse.swt.events.DisposeListener
+                              (widgetDisposed [self a_dispose-event]
+                                (hook-fn self (as-type-event a_dispose-event))))]
+      (.addDisposeListener this a_dipose-listener)
+      a_dipose-listener))
+
+  (add-listener [this event-type hook-fn]
+    (assert (keyword? event-type))
+    (assert (fn? hook-fn))
+    (let [an_listener (reify org.eclipse.swt.widgets.Listener
+                        (handleEvent [this an_event]
+                          (hook-fn this (as-event an_event))))
+          swt-event-type (event-type-symbol-alist event-type)]
+      (.addListener this swt-event-type an_listener)
+      an_listener))
+
+  (listeners [this event-type]
+    (assert (keyword? event-type))
+    (let [swt-event-type (event-type-symbol-alist event-type)]
+      (.getListeners this swt-event-type)))
+
+  (listening? [this event-type]
+    (assert (keyword? event-type))
+    (let [swt-event-type (event-type-symbol-alist event-type)]
+      (.isListening this swt-event-type)))
+
+  (notify-listeners [this event-type an_event]
+    (assert (keyword? event-type))
+    (.notifyListener this (event-type-symbol-alist event-type) an_event))
+
+  (remove-dispose-listener [this listener]
+    (.removeDisposeListener this listener))
+
+  (remove-listener [this event-type listener]
+    (assert (keyword? event-type))
+    (let [swt-event-type (event-type-symbol-alist event-type)]
+      (.removeListener this swt-event-type listener))))
