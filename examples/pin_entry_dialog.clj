@@ -1,7 +1,11 @@
 (ns ghostly.momonga.pin_entry_dialog
   (:require [ghostly.momonga.guikit :refer :all]
-            [ghostly.momonga.guikit.widgets :refer :all]
             [ghostly.momonga.guikit.layout :refer :all]
+            [ghostly.momonga.guikit.widgets :refer :all]
+            [ghostly.momonga.guikit.widgets.button :refer :all]
+            [ghostly.momonga.guikit.widgets.label :refer :all]
+            [ghostly.momonga.guikit.widgets.text :refer :all]
+            [ghostly.momonga.guikit.widgets.window :refer :all]
             [ghostly.momonga.twitter :refer :all]))
 
 
@@ -37,14 +41,14 @@
                         a_request-token (request-token twitter)
                         web-browser (find-program "html")]
                     (add-hook ok-button :clicked (fn [selected-event]
-                                                   (let [pin (.getText pin_text)]
+                                                   (let [pin (text pin_text)]
                                                      (try
                                                        (def access-token 
                                                          (if (pos? (length pin))
                                                            (access-token twitter a_request-token pin)
                                                            ;; else
                                                            (access-token twitter a_request-token)))
-                                                       (catch Twitter te
+                                                       (catch TwitterException te
                                                          (if (= (.getStatusCode te) 401)
                                                            (message-box "Unable to get the access token.")
                                                            ;; else

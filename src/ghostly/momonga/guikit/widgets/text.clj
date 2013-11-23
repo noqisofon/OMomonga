@@ -13,8 +13,8 @@
                                     Text))
   (:require [ghostly.momonga.graphics :refer :all]
             [ghostly.momonga.guikit.layout :refer :all]
+            [ghostly.momonga.guikit.styles :refer :all]
             [ghostly.momonga.guikit.widgets :refer :all]
-            [ghostly.momonga.guikit.widgets.styles :refer :all]
             [ghostly.momonga.utils.macros :refer :all]))
 
 
@@ -23,9 +23,9 @@
         :subcategory "instance typing"
         :added "0.1" }
   text?
-  "引数 label-or-control がテキストなら真を返します。"
-  [label-or-control]
-  (instance? Label label-or-control))
+  "引数 text-or-control がテキストなら真を返します。"
+  [text-or-control]
+  (instance? Text text-or-control))
 
 
 (defn ^{:requires-bindings true
@@ -36,7 +36,7 @@
   "親窓を受け取り、テキストオブジェクトを作成して返します。"
   [widget-or-window & {a_text :text a_styles :style a_grid-data :layout-data}]
   (let [swt-style-value (to-swt-style-value label-style-alist a_styles)
-        a_label (Text. widget-or-window swt-style-value)]
+        a_text-box (Text. widget-or-window swt-style-value)]
     (if a_text
-      (.setText a_label a_text))
-    a_label))
+      (set-text! a_text-box a_text))
+    a_text-box))

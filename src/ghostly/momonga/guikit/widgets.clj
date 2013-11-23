@@ -80,7 +80,7 @@
     (.getBackgroundImage this))
 
   (cursor [this]
-    (getCursor this))
+    (.getCursor this))
 
   (border-width [this]
     (.getBorderWidth this))
@@ -100,4 +100,4 @@
        ;;(instance? org.eclipse.swt.layout.FormData a_layout-data) (to-form-data a_layout-data)
        (instance? org.eclipse.swt.layout.GridData a_layout-data) (to-grid-data a_layout-data)
        ;;(instance? org.eclipse.swt.layout.RowData a_layout-data) (to-row-layout a_layout-data)
-       (:else a_layout-data)))))
+       :else a_layout-data))))

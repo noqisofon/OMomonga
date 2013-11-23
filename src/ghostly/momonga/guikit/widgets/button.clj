@@ -13,8 +13,8 @@
                                     Button))
   (:require [ghostly.momonga.graphics :refer :all]
             [ghostly.momonga.guikit.layout :refer :all]
+            [ghostly.momonga.guikit.styles :refer :all]
             [ghostly.momonga.guikit.widgets :refer :all]
-            [ghostly.momonga.guikit.widgets.styles :refer :all]
             [ghostly.momonga.utils.macros :refer :all]))
 
 
