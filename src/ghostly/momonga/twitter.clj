@@ -29,6 +29,12 @@
 (def the-twitter (TwitterFactory/getSingleton))
 
 
+(defprotocol TimelineAccessor
+  "タイムラインにアクセスするためのプロトコルを提供します。"
+  (home-timeline [this a_paging] "ホームタイムラインを返します。")
+  ())
+
+
 (defn consumer-key-set! [consumer-key consumer-secret]
   (.setOAuthConsumer the-twitter consumer-key consumer-secret))
 
