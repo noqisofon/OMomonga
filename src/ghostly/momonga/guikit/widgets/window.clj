@@ -1,5 +1,5 @@
 (ns ^{:doc "窓用の API 群です。"
-      :author "Ned Rihine" }
+      :author "ned rihine" }
   ghostly.momonga.guikit.widgets.window
   (:gen-class)
   (:import (org.eclipse.swt SWT)
@@ -47,7 +47,7 @@
     (if a_title
       (.setText result-window a_title))
     (if a_size
-      (.setMinimumSize (asPoint a_size)))
+      (.setMinimumSize (size->Point a_size)))
     (if a_layout
       (cond (grid-layout? a_layout) (.setLayout result-window (asGridLayout a_layout))
             (fill-layout? a_layout) (.setLayout result-window (asFillLayout a_layout))

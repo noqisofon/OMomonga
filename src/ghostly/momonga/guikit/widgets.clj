@@ -1,5 +1,5 @@
 (ns ^{:doc "ウィジェット用の低レベルな API 群です。"
-      :author "Ned Rihine" }
+      :author "ned rihine" }
   ghostly.momonga.guikit.widgets
   (:gen-class)
   (:import (org.eclipse.swt SWT)
@@ -12,13 +12,17 @@
             [ghostly.momonga.utils.macros :refer :all]))
 
 
+(defprotocol Disposable
+  ""
+  (dispose [this] "マネージリソースを破棄します。")
+  (dispose? [this] "マネージリソースが破棄されていた際に真を返します。"))
+
+
 (defprotocol Widget
   ""
-  (dispose [this] "ウィジェットを破棄します。")
   (data [this] [this key] "ウィジェットに関連付けられたデータを取得します。")
   (display [this] "ウィジェットに関連付けられているディスプレイオブジェクトを返します。")
   (style [this] "ウィジェットに設定されているスタイルを返します。")
-  (dispose? [this] "ウィジェットが破棄されていた際に真を返します。")
   (reskin [this flags] "スキンを変更します？")
   (set-data! [this a_data] [this key a_data] "ウィジェットにデータを関連付けます。")
   (widget? [this] "ウィジェットなら真を返します。"))
@@ -38,10 +42,14 @@
 
 
 (extend-type org.eclipse.swt.widgets.Widget
-  Widget
+  Disposable
   (dispose [this]
     (.dispose this))
 
+  (dispose? [this]
+    (.isDisposed this))
+
+  Widget
   (data [this]
     (.getData this))
   (data  [this key]
@@ -52,9 +60,6 @@
 
   (style [this]
     (to-style-value (.getStyle this)))
-
-  (dispose? [this]
-    (.isDisposed this))
 
   (reskin [this flags]
     (.reskin this flags))
