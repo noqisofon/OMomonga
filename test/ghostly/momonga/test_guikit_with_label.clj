@@ -8,6 +8,7 @@
             [ghostly.momonga.guikit.styles :refer :all]
             [ghostly.momonga.guikit.widgets.window :refer :all]
             [ghostly.momonga.guikit.widgets.label :refer :all]
+            [ghostly.momonga.guikit.widgets.decorations :refer :all]
             [ghostly.momonga.utils.macros :refer :all]))
 
 
