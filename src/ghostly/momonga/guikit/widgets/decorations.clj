@@ -28,7 +28,7 @@
   Decoration
   (compute-trim [this x y width height]
     "ウィジェットの大きさをいい感じにトリミングします。"
-    (Rectangle->rectangle (.computeTrim this x y with height)))
+    (Rectangle->rectangle (.computeTrim this x y width height)))
 
   (client-area [this]
     "ウィジェットのクライアントエリアの矩形を返します。"

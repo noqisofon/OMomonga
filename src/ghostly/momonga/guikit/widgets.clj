@@ -9,13 +9,8 @@
   (:require [ghostly.momonga.graphics :refer :all]
             [ghostly.momonga.guikit.layout :refer :all]
             [ghostly.momonga.guikit.styles :refer :all]
+            [ghostly.momonga.utils.protocols :refer :all]
             [ghostly.momonga.utils.macros :refer :all]))
-
-
-(defprotocol Disposable
-  ""
-  (dispose [this] "マネージリソースを破棄します。")
-  (dispose? [this] "マネージリソースが破棄されていた際に真を返します。"))
 
 
 (defprotocol Widget
