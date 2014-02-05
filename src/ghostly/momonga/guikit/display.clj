@@ -1,6 +1,6 @@
 (ns ^{:doc ""
       :author "ned rihine" }
-  ghostly.momonga.guikit.widgets.display
+  ghostly.momonga.guikit.display
   (:gen-class)
   (:import (org.eclipse.swt SWT))
   (:require [ghostly.momonga.graphics :refer :all]
@@ -11,7 +11,7 @@
             [ghostly.momonga.utils.macros :refer :all]))
 
 
-(defprotocol Display
+(defprotocol DisplayFacade
   ""
   (add-filter [this event-type listener] "")
   (add-listener [this event-type listener] "")
@@ -53,3 +53,73 @@
 
 (defn default-display []
   (org.eclipse.swt.widgets.Display/getDefault))
+
+(extend-type org.eclipse.swt.widgets.Display
+  DisplayFacade
+  (add-filter [this event-type listener]
+    "")
+
+  (add-listener [this event-type listener]
+    "")
+
+  (async-exec [this runnable]
+    ""
+    )
+
+  (beep [this]
+    "")
+
+  (dispose-exec [this runnable]
+    "")
+
+  (find-widget [this handle]
+    "")
+  (find-widget [this handle id]
+    "")
+  (find-widget [this widget id]
+    "")
+
+  (active-shell [this] "")
+
+  (bounds [this] "")
+
+  (client-area [this] "")
+
+  (cursor-control [this] "")
+
+  (cursor-location [this] "")
+
+  (cursor-sizes [this] "")
+
+  (data [this]
+    "")
+  (date [this key]
+    ""
+    )
+
+  (dismissal-alignment [this]
+    "")
+
+  (double-click-time [this]
+    "")
+
+  (focus-control [this]
+    "")
+
+  (high-contrast? [this]
+    "")
+
+  (icon-depath [this]
+    "")
+
+  (icon-sizes [this]
+    "")
+
+  (menu-bar [this]
+    "")
+
+  (monitors [this]
+    "")
+
+  (primary-monitor [this]
+    ""))

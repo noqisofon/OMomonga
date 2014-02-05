@@ -15,7 +15,7 @@
            :x :x-direction :y :y-direction)
 
 
-(defn as-event [^Event an_event]
+(defn Event->event [^Event an_event]
   (struct event
           (. an_event button)
           (. an_event character)
@@ -50,7 +50,7 @@
 (defstruct type-event :data :display :time :widget)
 
 
-(defn as-type-event [^TypedEvent an_event]
+(defn TypedEvent->type-event [^TypedEvent an_event]
   (struct type-event
           (. an_event data)
           (. an_event display)
@@ -61,7 +61,7 @@
 (defstruct selection-event :detail :doit :height :item :state-mask :text :width :x :y)
 
 
-(defn as-selection-event [^SelectionEvent an_event]
+(defn SelectionEvent->selection-event [^SelectionEvent an_event]
   (struct selection-event
           (. an_event detail)
           (. an_event doit)
