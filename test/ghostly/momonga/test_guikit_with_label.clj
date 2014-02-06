@@ -1,6 +1,6 @@
 (ns ghostly.momonga.test_guikit_with_label
-  (:import (org.eclipse.swt SWT)
-           (org.eclipse.swt.widgets Display))
+  ;; (:import (org.eclipse.swt SWT)
+  ;;          (org.eclipse.swt.widgets Display))
   (:require [clojure.test :refer :all]
             [ghostly.momonga.graphics :refer :all]
             [ghostly.momonga.guikit :refer :all]
@@ -31,8 +31,8 @@
                         ;; a_label のテキストの値は "Hello, World!" である。
                         (is (= "Hello, World!" (text a_label)))
 
-                        ;; root-window の戻り値と window の戻り値である shell は同一である。
-                        (is (= (root-window display) shell))
+                        ;; active-shell の戻り値と window の戻り値である shell は同一である。
+                        (is (= (active-shell display) shell))
 
                         ;; テストのため、すぐに窓を閉じるようにする。
                         (.timerExec display 1 (reify Runnable
