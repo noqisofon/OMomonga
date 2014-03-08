@@ -46,6 +46,9 @@
           (. an_event y)
           (. an_event yDirection)))
 
+;; (defn event->Event [evt]
+;;   )
+
 
 (defstruct type-event :data :display :time :widget)
 
@@ -136,12 +139,11 @@
 
 (extend-type org.eclipse.swt.widgets.Widget
   ListenTarget
-
   (add-dispose-listener [this hook-fn]
     (assert (fn? hook-fn))
     (let [a_dipose-listener (reify org.eclipse.swt.events.DisposeListener
                               (widgetDisposed [self a_dispose-event]
-                                (hook-fn self (as-type-event a_dispose-event))))]
+                                (hook-fn self (TypedEvent->type-event a_dispose-event))))]
       (.addDisposeListener this a_dipose-listener)
       a_dipose-listener))
 
@@ -149,8 +151,8 @@
     (assert (keyword? event-type))
     (assert (fn? hook-fn))
     (let [an_listener (reify org.eclipse.swt.widgets.Listener
-                        (handleEvent [this an_event]
-                          (hook-fn this (as-event an_event))))
+                        (handleEvent [this evt]
+                          (hook-fn this (Event->event evt))))
           swt-event-type (event-type-symbol-alist event-type)]
       (.addListener this swt-event-type an_listener)
       an_listener))
@@ -165,9 +167,10 @@
     (let [swt-event-type (event-type-symbol-alist event-type)]
       (.isListening this swt-event-type)))
 
-  (notify-listeners [this event-type an_event]
+  (notify-listeners [this event-type evt]
     (assert (keyword? event-type))
-    (.notifyListener this (event-type-symbol-alist event-type) an_event))
+    (assert (every? nil? (map evt evt)))
+    (.notifyListener this (event-type-symbol-alist event-type) evt))
 
   (remove-dispose-listener [this listener]
     (.removeDisposeListener this listener))

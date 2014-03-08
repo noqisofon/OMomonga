@@ -35,6 +35,5 @@
                         (is (= (active-shell display) shell))
 
                         ;; テストのため、すぐに窓を閉じるようにする。
-                        (.timerExec display 1 (reify Runnable
-                                                (run [this]
-                                                  (.close shell))))))))
+                        (timer-exec display 1 (fn []
+                                                (.close shell)))))))
