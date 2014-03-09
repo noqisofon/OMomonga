@@ -5,6 +5,9 @@ jdk:
   - openjdk7
   - openjdk6
   - oraclejdk7
+before_install:
+  - "export DISPLAY=:99.0"
+  - "sh -e /etc/init.d/xvfb start"
 begore_script:
   - "echo JAVA_HOME:    $JAVA_HOME"
   - "echo 'which java': `which java`"
